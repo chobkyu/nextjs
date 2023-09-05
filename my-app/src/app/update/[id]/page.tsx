@@ -20,7 +20,7 @@ export default function Update() {
                 setBody(res.body);
             });
 
-        fetch(`http://localhost:3000/api/`).then(res => res.json()).then(res => console.log(res))
+        fetch(`/api/items`).then(res => res.json()).then(res => console.log(res))
     },[]);
     return(
         <form onSubmit={(e:any)=>{
