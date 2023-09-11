@@ -3,6 +3,13 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Control } from './Control'
 
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+//import MenuIcon from '@mui/icons-material/Menu';
 
 export const metadata: Metadata = {
   title: 'NextJS tutorial',
@@ -10,14 +17,14 @@ export const metadata: Metadata = {
 }
 
 
-export default async function RootLayout({children}: {
+export default async function RootLayout({ children }: {
   children: React.ReactNode
 }) {
 
   // const res = await fetch('http://localhost:9999/topics',{cache:'no-cache'});
   // const topics = await res.json();
 
-  const res = await fetch(`https://nextjs-git-main-chobkyu.vercel.app/api/items`,{cache:'no-cache'});
+  const res = await fetch(`https://nextjs-git-main-chobkyu.vercel.app/api/items`, { cache: 'no-cache' });
   //const res = await fetch(`http://localhost:3000/api/items`,{cache:'no-cache'});
 
   const topics = await res.json();
@@ -28,9 +35,30 @@ export default async function RootLayout({children}: {
   return (
     <html >
       <body>
-        <h1><Link href='/'>WEB</Link></h1>
+        <div style={{ background: 'black' }}>
+          {/* <h1><Link href='/'>app bar</Link></h1> */}
+          <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static">
+              <Toolbar>
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                  sx={{ mr: 2 }}
+                >
+                  {/* <MenuIcon /> */}
+                </IconButton>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                  News
+                </Typography>
+                <Button color="inherit">Login</Button>
+              </Toolbar>
+            </AppBar>
+          </Box>
+        </div>
         <ol>
-          {topics.data.map((topic:any) => {
+          {topics.data.map((topic: any) => {
             return <p key={topic.id}>{topic.userId}</p>
           })}
           {/* {topics.map((topic:any)=>{
@@ -39,7 +67,7 @@ export default async function RootLayout({children}: {
           })} */}
         </ol>
         {children}
-        <Control/>
+        <Control />
       </body>
     </html>
   )
