@@ -17,14 +17,22 @@ export default async function RootLayout({children}: {
   // const res = await fetch('http://localhost:9999/topics',{cache:'no-cache'});
   // const topics = await res.json();
 
-  const res = await fetch(`https://nextjs-1y37rth5q-chobkyu.vercel.app/api/items`,{cache:'no-cache'});
+  const res = await fetch(`https://nextjs-git-main-chobkyu.vercel.app/api/items`,{cache:'no-cache'});
+  //const res = await fetch(`http://localhost:3000/api/items`,{cache:'no-cache'});
 
+  const topics = await res.json();
+
+  const onclick = () => {
+    console.log(res)
+  }
   return (
     <html >
       <body>
         <h1><Link href='/'>WEB</Link></h1>
         <ol>
-          <button onClick={() => console.log(res)}>test</button>
+          {topics.data.map((topic:any) => {
+            return <p key={topic.id}>{topic.userId}</p>
+          })}
           {/* {topics.map((topic:any)=>{
             return <li key={topic.id}><Link href={`/read/${topic.id}`}>{topic.title}</Link></li>
 
