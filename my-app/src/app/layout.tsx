@@ -17,7 +17,7 @@ export default async function RootLayout({children}: {
   // const res = await fetch('http://localhost:9999/topics',{cache:'no-cache'});
   // const topics = await res.json();
 
-  const res = await fetch(`http://localhost:3000/api/items`,{cache:'no-cache'});
+  //const res = await fetch(`http://localhost:3000/api/items`,{cache:'no-cache'});
 
   return (
     <html >
