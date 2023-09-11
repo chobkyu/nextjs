@@ -14,8 +14,8 @@ export default async function RootLayout({children}: {
   children: React.ReactNode
 }) {
 
-  const res = await fetch('http://localhost:9999/topics',{cache:'no-cache'});
-  const topics = await res.json();
+  // const res = await fetch('http://localhost:9999/topics',{cache:'no-cache'});
+  // const topics = await res.json();
 
  
   return (
@@ -23,10 +23,10 @@ export default async function RootLayout({children}: {
       <body>
         <h1><Link href='/'>WEB</Link></h1>
         <ol>
-          {topics.map((topic:any)=>{
+          {/* {topics.map((topic:any)=>{
             return <li key={topic.id}><Link href={`/read/${topic.id}`}>{topic.title}</Link></li>
 
-          })}
+          })} */}
         </ol>
         {children}
         <Control/>

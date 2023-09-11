@@ -12,13 +12,13 @@ export default function Update() {
     const id = params.id;
 
     useEffect(() => {
-        fetch(`http://localhost:9999/topics/${id}`)
-            .then(res => res.json())
-            .then((res) => {
-                console.log(res);
-                setTitle(res.title);
-                setBody(res.body);
-            });
+        // fetch(`http://localhost:9999/topics/${id}`)
+        //     .then(res => res.json())
+        //     .then((res) => {
+        //         console.log(res);
+        //         setTitle(res.title);
+        //         setBody(res.body);
+        //     });
 
         fetch(`/api/items`).then(res => res.json()).then(res => console.log(res))
     },[]);
@@ -35,14 +35,14 @@ export default function Update() {
                 },
                 body:JSON.stringify({title,body})
             }
-            fetch(`http://localhost:9999/topics/${id}`, option)
-                .then((res) => res.json())
-                .then(res => {
-                    console.log(res);
-                    const lastid = res.id;
-                    router.push(`/read/${lastid}`);
-                    router.refresh();
-                });
+            // fetch(`http://localhost:9999/topics/${id}`, option)
+            //     .then((res) => res.json())
+            //     .then(res => {
+            //         console.log(res);
+            //         const lastid = res.id;
+            //         router.push(`/read/${lastid}`);
+            //         router.refresh();
+            //     });
         }}>
             <p>
                 <input type='text' name='title' value={title} onChange={(e)=>{setTitle(e.target.value)}} placeholder="title"/>

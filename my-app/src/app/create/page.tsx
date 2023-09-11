@@ -18,14 +18,14 @@ export default function Create() {
                 },
                 body:JSON.stringify({title,body})
             }
-            fetch(`http://localhost:9999/topics`, option)
-                .then((res) => res.json())
-                .then(res => {
-                    console.log(res);
-                    const lastid = res.id;
-                    router.push(`/read/${lastid}`);
-                    router.refresh();
-                });
+            // fetch(`http://localhost:9999/topics`, option)
+            //     .then((res) => res.json())
+            //     .then(res => {
+            //         console.log(res);
+            //         const lastid = res.id;
+            //         router.push(`/read/${lastid}`);
+            //         router.refresh();
+            //     });
         }}>
             <p>
                 <input type='text' name='title' placeholder="title"/>
