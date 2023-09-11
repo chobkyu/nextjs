@@ -17,12 +17,14 @@ export default async function RootLayout({children}: {
   // const res = await fetch('http://localhost:9999/topics',{cache:'no-cache'});
   // const topics = await res.json();
 
- 
+  const res = await fetch(`http://localhost:3000/api/items`,{cache:'no-cache'});
+
   return (
     <html >
       <body>
         <h1><Link href='/'>WEB</Link></h1>
         <ol>
+         
           {/* {topics.map((topic:any)=>{
             return <li key={topic.id}><Link href={`/read/${topic.id}`}>{topic.title}</Link></li>
 
