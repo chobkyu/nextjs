@@ -24,7 +24,7 @@ export default async function RootLayout({children}: {
       <body>
         <h1><Link href='/'>WEB</Link></h1>
         <ol>
-         
+          <button onClick={() => console.log(res)}>test</button>
           {/* {topics.map((topic:any)=>{
             return <li key={topic.id}><Link href={`/read/${topic.id}`}>{topic.title}</Link></li>
 
