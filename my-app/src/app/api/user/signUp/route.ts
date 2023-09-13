@@ -2,7 +2,6 @@ import { NextResponse , NextRequest} from 'next/server'
 
 const connection = require('../config/db');
 
-
 function queryPromise(queryString:string) {
     return new Promise((resolve, reject) => {  
 		connection.query(queryString, (error:any, results:any) => {  
@@ -13,28 +12,25 @@ function queryPromise(queryString:string) {
 		});  
 	});  
 }
-export async function POST(request: Request) {
+export async function POST(request:Request){
     const body = await request.json();
-    console.log(body)
-    const userId = body.userId;
-    const password = body.password;
 
-    console.log(userId)
-    console.log(password)
-    let queryString = `select * from user where userId = '${userId}' and userPw = '${password}'`;
+    const userId = body.userId;
+    const userPw = body.userPw;
+    const name = body.name;
+    const birth = body.birth;
+
+    let queryString = `insert into user (userId, userPw, userName, userBirth)
+                     values ('${userId}','${userPw}','${name}','${birth}')`;
 
     try{
-        const row = await queryPromise(queryString);
-        if(row){
-            return NextResponse.json({status:201,success:true});
-        }
-        console.log(row)
+        const res = await queryPromise(queryString);
+        console.log(res);
 
-    } catch(err){
+        return NextResponse.json({status:201,success:true});
+    }catch(err){
         console.log(err);
         return NextResponse.json({err});
-    }
-    
 
-    return NextResponse.json({msg:body})
+    }
 }
