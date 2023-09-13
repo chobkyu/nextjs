@@ -10,7 +10,7 @@ export default function Login() {
     const login = () => {
         console.log(userId);
         console.log(password);
-
+        console.log(process.env.NEXT_PUBLIC_API_URL)
         const option = {
             method: 'POST',
             headers: {
@@ -18,7 +18,7 @@ export default function Login() {
             },
             body: JSON.stringify({ userId, password })
         }
-        fetch(`http://localhost:3000/api/user/`,option)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/`,option)
             // .then((res) => res.json())
             // .then((res) => {console.log(res)});
     }
