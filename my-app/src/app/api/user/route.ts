@@ -25,6 +25,9 @@ export async function POST(request: Request) {
 
     try{
         const row = await queryPromise(queryString);
+        if(row){
+            return NextResponse.json({status:201,success:true});
+        }
         console.log(row)
 
     } catch(err){
