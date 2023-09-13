@@ -25,3 +25,8 @@ body {
     )
     rgb(var(--background-start-rgb));
 } */
+
+html {
+  padding: auto;
+  margin : 0;
+}
