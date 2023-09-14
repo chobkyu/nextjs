@@ -1,6 +1,6 @@
 import { NextResponse , NextRequest} from 'next/server'
 
-const connection = require('../config/db');
+const connection = require('../../config/db');
 
 function queryPromise(queryString:string) {
     return new Promise((resolve, reject) => {  
@@ -15,9 +15,10 @@ function queryPromise(queryString:string) {
 export async function POST(request:Request){
     const body = await request.json();
 
+    console.log(body);
     const userId = body.userId;
     const userPw = body.userPw;
-    const name = body.name;
+    const name = body.userName;
     const birth = body.birth;
 
     let queryString = `insert into user (userId, userPw, userName, userBirth)
