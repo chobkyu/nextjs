@@ -18,6 +18,10 @@ export default function myPage()  {
                 </div>
             </header>
 
+            <div className='Tab' style={{background:'yellow', height:'3rem'}}>
+                내 글, 친구 목록, 그룹 목록 탭
+            </div>
+
             <div style={{background:'green'}}>
                 board
             </div>
