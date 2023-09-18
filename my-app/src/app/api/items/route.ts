@@ -38,7 +38,7 @@ export async function GET() {
   console.log('?????')
   try {  
 		const rows = await queryPromise(queryString);  
-    console.log(rows)
+		console.log(rows)
 		return NextResponse.json({data:rows , status:200});  
 	} catch (error) {  
 		console.error(error);  

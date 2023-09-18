@@ -49,7 +49,7 @@ export default function SignUp() {
         setUser({ ...user, [name]: value });
     }
     return (
-        <div style={{ textAlign: 'center', marginTop: '12rem' }}>
+        <div style={{ textAlign: 'center', marginTop: '10rem' }}>
 
             <h2>Sign Up!</h2>
             <p>
