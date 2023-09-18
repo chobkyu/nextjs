@@ -34,11 +34,14 @@ export async function POST(request:Request){
 
 
 const checkUser = async (userId:string, userPw:string) => {
-    let queryString = `select * from user where userId = '${userId}' and userPw = '${userPw}'`;
+    let queryString = `select * from user where userId = '${userId}'`;
 
     try{
-        const row = await queryPromise(queryString);
-        if(row){
+        let row: string | any | unknown[]  = [];
+        row = await queryPromise(queryString);
+        console.log(row);
+        
+        if(row.length>0){
             return {success:false};
         }else{
             return {success:true};
