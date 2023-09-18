@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import Input from '@mui/material/Input';
 import { Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 export interface userDto {
     userId: string,
@@ -15,6 +16,7 @@ export interface userDto {
 const ariaLabel = { 'aria-label': 'description' };
 
 export default function SignUp() {
+    const router = useRouter();
 
     const [user, setUser] = useState<userDto>({
         userId: '',
@@ -39,7 +41,14 @@ export default function SignUp() {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/signUp`, option)
             .then(res => res.json())
             .then((res) => {
-                console.log(res);
+                if(res.status==500){
+                    if(res.msg=='중복 ID'){
+                        alert('사용 불가한 아이디입니다.');
+                        return;
+                    }
+                }else{
+                    router.push('/');
+                }
             }
             ); 
     }
