@@ -9,7 +9,7 @@ export default function myPage()  {
                     <img style={{width:'100%',height:'100%', objectFit:'cover'}} src='https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png'/>
 
                 </div>
-                <div className='profile' style={{float:'left',marginLeft:'2rem',width:'13rem'}} >
+                <div className='profile' style={{float:'left',marginLeft:'2rem',width:'10rem'}} >
                     <h1>이름</h1>
                     <span>아이디</span>
                 </div>

@@ -30,7 +30,7 @@ export default function Login() {
             .then((res) => res.json())
             .then((res) => {
                 if (res.success) {
-                    router.push('/');
+                    router.push('/myPage');
                 } else {
                     alert('로그인 실패');
                     return;
@@ -50,7 +50,7 @@ export default function Login() {
                 <Input placeholder='ID' inputProps={ariaLabel} onChange={(e: any) => setUserId(e.target.value)}/>
             </p>
             <p>
-                <Input placeholder='PASSWORD' style={{marginTop:'1.5rem'}} inputProps={ariaLabel} onChange={(e: any) => setPassword(e.target.value)}/>
+                <Input placeholder='PASSWORD' style={{marginTop:'1.5rem'}} type='password' inputProps={ariaLabel} onChange={(e: any) => setPassword(e.target.value)}/>
             </p>
             <Button variant="contained" onClick={() => login()} style={{background:'black',fontWeight:'bold'}} size='large'>Login</Button>
 
