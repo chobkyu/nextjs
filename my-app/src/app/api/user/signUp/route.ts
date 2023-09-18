@@ -11,6 +11,12 @@ export async function POST(request:Request){
     const name = body.userName;
     const birth = body.birth;
 
+    const check = await checkUser(userId,userPw);
+
+    if(!check.success){
+        return NextResponse.json({status:500, msg:'중복 ID'});
+    }
+
     let queryString = `insert into user (userId, userPw, userName, userBirth)
                      values ('${userId}','${userPw}','${name}','${birth}')`;
 
@@ -23,5 +29,22 @@ export async function POST(request:Request){
         console.log(err);
         return NextResponse.json({err});
 
+    }
+}
+
+
+const checkUser = async (userId:string, userPw:string) => {
+    let queryString = `select * from user where userId = '${userId}' and userPw = '${userPw}'`;
+
+    try{
+        const row = await queryPromise(queryString);
+        if(row){
+            return {success:false};
+        }else{
+            return {success:true};
+        }
+    }catch(err){
+        console.log(err);
+        return {success: false, msg:err}
     }
 }
