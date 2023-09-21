@@ -41,6 +41,7 @@ export default function SignUp() {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/signUp`, option)
             .then(res => res.json())
             .then((res) => {
+                console.log(res);
                 if(res.status==500){
                     if(res.msg=='중복 ID'){
                         alert('사용 불가한 아이디입니다.');

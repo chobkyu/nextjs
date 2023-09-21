@@ -22,9 +22,11 @@ export async function POST(request:Request){
 
     try{
         const res = await queryPromise(queryString);
+
+        const { userPw, ...result } = body
         console.log(res);
 
-        return NextResponse.json({status:201,success:true});
+        return NextResponse.json({status:201,success:true,data:result});
     }catch(err){
         console.log(err);
         return NextResponse.json({err});
