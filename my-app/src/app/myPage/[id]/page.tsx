@@ -1,11 +1,24 @@
 "use client"
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
 
+interface userData {
+    userId:string,
+    myIntro:string,
+    id:number,
+    userName:string,
+    userBirth:Date
+}
+
 export default function myPage()  {
     const [cookies,setCookie, removeCookie] = useCookies(['userData']);
+    const [user,setUser] = useState<userData>();
+    useEffect(() => {
+        let userData = cookies.userData;
+        setUser(userData);
+    },[]);
     return (
         <>
             <header style={{background:'#BDBDBD' , height:'13rem',padding:'1rem'}}>
@@ -14,11 +27,11 @@ export default function myPage()  {
 
                 </div>
                 <div className='profile' style={{float:'left',marginLeft:'2rem',width:'10rem'}} >
-                    <h1>이름</h1>
-                    <span>아이디</span>
+                    <h1>{user?.userName}</h1>
+                    <span>{user?.userId}</span>
                 </div>
                 <div className='hamadi' style={{display:'inline-block',width:'100%', marginTop:'1.5rem'}}>
-                    적고 싶은 말 한마디
+                    {user?.myIntro}
                 </div>
             </header>
 
@@ -28,6 +41,7 @@ export default function myPage()  {
 
             <div style={{background:'green'}}>
                 board
+                <button onClick={() => console.log(cookies)}>test</button>
             </div>
         </>
     )
