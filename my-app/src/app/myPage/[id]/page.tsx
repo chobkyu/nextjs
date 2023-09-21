@@ -12,7 +12,7 @@ interface userData {
     userBirth:Date
 }
 
-export default function myPage()  {
+export default function MyPage()  {
     const [cookies,setCookie, removeCookie] = useCookies(['userData']);
     const [user,setUser] = useState<userData>();
     useEffect(() => {
