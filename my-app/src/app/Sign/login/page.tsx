@@ -6,11 +6,12 @@ import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Input from '@mui/material/Input';
 import { Button } from '@mui/material';
+import { useCookies } from 'react-cookie';
 
 const ariaLabel = { 'aria-label': 'description' };
 export default function Login() {
     const router = useRouter();
-
+    const [cookies,setCookie, removeCookie] = useCookies(['userData']);
 
     const [userId, setUserId] = useState<string>('');
     const [password, setPassword] = useState<string>('');
@@ -30,6 +31,7 @@ export default function Login() {
             .then((res) => res.json())
             .then((res) => {
                 if (res.success) {
+                    setCookie('userData',res.data);
                     router.push('/myPage');
                 } else {
                     alert('로그인 실패');
@@ -38,6 +40,8 @@ export default function Login() {
             }
             );
     }
+
+   
     return (
         <div style={{textAlign:'center',marginTop:'12rem'}}>
             {/* <TextField id="outlined-basic" label="ID" variant="outlined" onChange={(e: any) => setUserId(e.target.value)} />
