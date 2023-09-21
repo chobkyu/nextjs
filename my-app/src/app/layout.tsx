@@ -37,7 +37,7 @@ export default async function RootLayout({ children }: {
     <html >
       <body>
         <header >
-          <h1 style={{ marginLeft: '1rem' }}>Private App</h1>
+          <h1 style={{ marginLeft: '1rem' }}>PUDA</h1>
         </header>
 
         <hr />

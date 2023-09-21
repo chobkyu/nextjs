@@ -32,7 +32,7 @@ export default function Login() {
             .then((res) => {
                 if (res.success) {
                     setCookie('userData',res.data);
-                    router.push('/myPage');
+                    router.push(`/myPage/${res.data.id}`);
                 } else {
                     alert('로그인 실패');
                     return;

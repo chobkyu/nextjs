@@ -1,7 +1,11 @@
+"use client"
+
 import React from 'react';
 import { useState } from 'react';
+import { useCookies } from 'react-cookie';
 
 export default function myPage()  {
+    const [cookies,setCookie, removeCookie] = useCookies(['userData']);
     return (
         <>
             <header style={{background:'#BDBDBD' , height:'13rem',padding:'1rem'}}>

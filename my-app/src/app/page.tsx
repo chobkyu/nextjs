@@ -23,7 +23,7 @@ export default function Home() {
     let user = cookies.userData;
     console.log(user)
     if(user) {
-      router.push('/myPage')
+      router.push(`/myPage/${user.id}`)
     }
   },[]);
   return (
