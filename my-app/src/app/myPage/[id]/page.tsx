@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { useCookies } from 'react-cookie';
+import { useRouter } from 'next/navigation';
 
 interface userData {
     userId:string,
@@ -15,9 +16,16 @@ interface userData {
 export default function MyPage()  {
     const [cookies,setCookie, removeCookie] = useCookies(['userData']);
     const [user,setUser] = useState<userData>();
+    const router = useRouter();
+
     useEffect(() => {
         let userData = cookies.userData;
-        setUser(userData);
+        if( !userData ){
+            alert('로그인이 필요한 서비스입니다');
+            router.push('/Sign/login');
+        }else{
+            setUser(userData);
+        }
     },[]);
     return (
         <>
