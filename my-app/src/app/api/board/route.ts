@@ -17,7 +17,7 @@ export async function POST(request : Request) {
         insert into myBoard(
             title,contents,isDeleted,isModified,dateTime,userId,thumbnail
         ) values (
-            ${setWriteData.title},${setWriteData.contents},false,false,${new Date()},${setWriteData.userId},null
+            '${setWriteData.title}','${setWriteData.contents}',false,false,'${new Date()}',${setWriteData.userId},null
         );
     `
     

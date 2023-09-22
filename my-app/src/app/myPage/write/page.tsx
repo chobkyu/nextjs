@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { Button } from '@mui/material';
+import { getOption } from '../../Common/option'
 
 
 interface writeData {
@@ -112,6 +113,20 @@ export default function Write() {
 
     const submitWriteData = () => {
         console.log(write);
+
+        const option = getOption('POST',write);
+
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board`,option)
+            .then(res => res.json())
+            .then((res) => {
+                if(res.status==201){
+                    alert('등록 완료');
+                    window.history.go(-1);
+                }else{
+                    alert('에러가 발생했습니다');
+                    return;
+                }
+            })
     }
 
     return (
