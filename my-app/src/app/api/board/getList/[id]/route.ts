@@ -6,7 +6,7 @@ interface getListDto{
     userId:number;
 }
 
-export async function GET(request:NextApiRequest,context:{params: any}) {
+export async function GET(context:{params: any}) {
     console.log(context)
     const queryParam = context.params.id
 
