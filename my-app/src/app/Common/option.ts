@@ -1,4 +1,4 @@
-export const getOption = (methodName:string, obj:any) => {
+export const getOption = (methodName:string, obj?:any) => {
     let method = methodName;
     let headers = {
         'Content-Type' : 'application/json'
