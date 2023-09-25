@@ -1,12 +1,26 @@
 "use client"
 
 import { getOption } from "@/app/Common/option"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+
+
+interface board {
+    user:number,
+    userId : string,
+    userName:string,
+    boardId: number,
+    title: string,
+    contents: string,
+    isModified:boolean,
+    dateTime:Date,
+    thumbnail:string,
+}
 
 export function MyList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
-
+    const [board,setBoard] = useState<board[]>([]);
+    
     const getList = async  () => {
         const userId = cookies.userData.id;
         const option = getOption('GET');
@@ -15,6 +29,7 @@ export function MyList() {
             .then(res => res.json())
             .then(res => {
                 console.log(res);
+                setBoard(res.datas);
             })
     }
 
@@ -23,7 +38,7 @@ export function MyList() {
     },[]);
     
     return (
-        <></>
+        <><button onClick={() => console.log(board)}>test</button></>
     )
 
 }

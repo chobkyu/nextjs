@@ -54,10 +54,10 @@ html {
 
 .filebox input[type="file"] {
   position: absolute;
-  width: 0;
+  width: 0; 
   height: 0;
   padding: 0;
-  overflow: hidden;
+  overflow: hidden; 
   border: 0;
 }
 
@@ -67,7 +67,7 @@ html {
 }
 
 .MuiSpeedDial-actionsClosed{
-  background-color: black;
+  background-color: black; 
 }
 
 .MuiSpeedDial-fab{
