@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
+import { MyList } from './MyList';
 
 interface userData {
     userId: string,
@@ -102,6 +103,7 @@ export default function MyPage() {
 
                     <CustomTabPanel value={value} index={0}>
                         Item One
+                        <MyList/>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
                         Item Two

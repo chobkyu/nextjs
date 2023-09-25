@@ -47,14 +47,14 @@ const handler = NextAuth({
         }),
     ],
 
-    callbacks : {
-        async session({session,user}){
-            console.log('callback')
-            console.log(user)
-            session.user = {};
-            return session;
-        }
-    }
+    // callbacks : {
+    //     async session({session,user}){
+    //         console.log('callback')
+    //         console.log(user)
+    //         session.user = ;
+    //         return session;
+    //     }
+    // }
 })
 
 export { handler as GET, handler as POST }
