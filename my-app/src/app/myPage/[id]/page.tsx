@@ -76,7 +76,7 @@ export default function MyPage() {
     }, []);
     return (
         <>
-            <header style={{ background: '#BDBDBD', height: '13rem', padding: '1rem' }}>
+            <header className='card_myPage' style={{ height: '13rem', padding: '1rem', }}>
                 <div style={{ width: '7rem', height: '7rem', borderRadius: '70%', overflow: 'hidden', float: 'left' }}>
                     <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src='https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png' />
 
@@ -90,7 +90,7 @@ export default function MyPage() {
                 </div>
             </header>
 
-            <div className='Tab' style={{  height: '3rem',textAlign:'center' }}>
+            <div className='Tab' style={{  height: '3rem',textAlign:'center',marginTop:'0.7rem' }}>
                 <Box sx={{ width: '100%' }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered variant="fullWidth" >
