@@ -60,3 +60,16 @@ html {
   overflow: hidden;
   border: 0;
 }
+
+.MuiSpeedDial-action{
+
+ background-color: black;
+}
+
+.MuiSpeedDial-actionsClosed{
+  background-color: black;
+}
+
+.MuiSpeedDial-fab{
+  background-color: black;
+}
