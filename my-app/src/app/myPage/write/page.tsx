@@ -156,7 +156,8 @@ export default function Write() {
             </div>
 
             <div style={{marginLeft:'13%',marginTop:'1rem'}}>
-                <Button variant="contained" onClick={submitWriteData} style={{background:'#3f3c3c',width:'15.5rem',fontWeight:'bold'}} size='large'>Submit</Button>
+                <Button variant="contained" onClick={submitWriteData} style={{background:'#3f3c3c',width:'7.5rem',fontWeight:'bold'}} size='large'>Submit</Button>
+                <Button variant="contained" onClick={() => window.history.go(-1)} style={{background:'#3f3c3c',width:'7.5rem',fontWeight:'bold', marginLeft:'0.5rem'}} size='large'>Cancel</Button>
 
             </div>
 

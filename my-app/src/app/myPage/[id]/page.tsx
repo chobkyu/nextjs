@@ -102,7 +102,6 @@ export default function MyPage() {
                     </Box>
 
                     <CustomTabPanel value={value} index={0}>
-                        Item One
                         <MyList/>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>

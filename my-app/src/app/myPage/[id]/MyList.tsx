@@ -3,25 +3,27 @@
 import { getOption } from "@/app/Common/option"
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
 
 
 interface board {
-    user:number,
-    userId : string,
-    userName:string,
+    user: number,
+    userId: string,
+    userName: string,
     boardId: number,
     title: string,
     contents: string,
-    isModified:boolean,
-    dateTime:Date,
-    thumbnail:string,
+    isModified: boolean,
+    dateTime: Date,
+    thumbnail: string,
 }
 
 export function MyList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
-    const [board,setBoard] = useState<board[]>([]);
-    
-    const getList = async  () => {
+    const [board, setBoard] = useState<board[]>([]);
+
+    const getList = async () => {
         const userId = cookies.userData.id;
         const option = getOption('GET');
 
@@ -35,10 +37,35 @@ export function MyList() {
 
     useEffect(() => {
         getList();
-    },[]);
-    
+    }, []);
+
+    const ImageListComponent = (boardOne:board) => {
+        if(boardOne.thumbnail!= null){
+            return ( 
+            <ImageListItem key={boardOne.thumbnail}>
+                <img
+                    srcSet={`${boardOne.thumbnail}`}
+                    src={`${boardOne.thumbnail}`}
+                    alt={boardOne.title}
+                    loading="lazy"
+                />
+            </ImageListItem>)
+        } else {
+            return (
+                <div style={{display:'inline-block',height:'11rem'}}>
+                    <h4 style={{marginTop:'1rem'}}>{boardOne.title}</h4>
+                </div>
+            )
+        }
+    }
     return (
-        <><button onClick={() => console.log(board)}>test</button></>
+        <>
+            <ImageList sx={{ width: '100%', height: '15rem' }} cols={3} rowHeight={164}>
+                {board.map((boardOne) => (
+                   ImageListComponent(boardOne)
+                ))}
+            </ImageList>
+        </>
     )
 
 }
