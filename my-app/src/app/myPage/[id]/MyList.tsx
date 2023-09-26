@@ -39,18 +39,30 @@ export function MyList() {
         getList();
     }, []);
 
+    const ImageListComponent = (boardOne:board) => {
+        if(boardOne.thumbnail!= null){
+            return ( 
+            <ImageListItem key={boardOne.thumbnail}>
+                <img
+                    srcSet={`${boardOne.thumbnail}`}
+                    src={`${boardOne.thumbnail}`}
+                    alt={boardOne.title}
+                    loading="lazy"
+                />
+            </ImageListItem>)
+        } else {
+            return (
+                <div style={{display:'inline-block',height:'11rem'}}>
+                    <h4 style={{marginTop:'1rem'}}>{boardOne.title}</h4>
+                </div>
+            )
+        }
+    }
     return (
         <>
-            <ImageList sx={{ width: '100%', height: 450 }} cols={3} rowHeight={164}>
+            <ImageList sx={{ width: '100%', height: '15rem' }} cols={3} rowHeight={164}>
                 {board.map((boardOne) => (
-                    <ImageListItem key={boardOne.thumbnail}>
-                        <img
-                            srcSet={`${boardOne.thumbnail}`}
-                            src={`${boardOne.thumbnail}`}
-                            alt={boardOne.title}
-                            loading="lazy"
-                        />
-                    </ImageListItem>
+                   ImageListComponent(boardOne)
                 ))}
             </ImageList>
         </>
