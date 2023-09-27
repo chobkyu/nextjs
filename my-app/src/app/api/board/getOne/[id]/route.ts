@@ -29,19 +29,23 @@ export async function GET(request:NextRequestWithAuth, context:{params:any}){
             b.contents,
             b.isModified,
             b.dateTime,
-            c.imgUrl
+            c.imgUrl,
+            d.imgUrl as userImg
         from next.user a
         left join next.myBoard b
         on a.id = b.userId
         left join next.myBoardImg c
         on b.id = c.boardId
-        where a.id = 10
-        and b.id = ${boardId}
+        left join next.userImg d
+        on a.id = d.userId
+        where b.id = ${boardId}
         and b.isDeleted = false
     `;
 
     try{
         const res : getOne[] | any= await queryPromise(queryString);
+
+        console.log(res);
         
         const imgList = getListObject(res);
 
@@ -62,8 +66,11 @@ const getListObject = (res:getOne[]) => {
     let imgUrlArr = new Array<string>();
     
     res.forEach(one => {
+        console.log(one.imgUrl);
         imgUrlArr.push(one.imgUrl);    
     });
+
+    console.log(imgUrlArr);
 
     return imgUrlArr;
 }
