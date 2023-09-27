@@ -70,8 +70,10 @@ export default function ReadOne(props: any) {
 
                 </div>
             </header>
-
-            <div style={{ marginLeft: '17%', marginTop: '6rem', }}>
+            <div className="card_myPage" style={{width:'86%',height:'24rem',marginTop:'2rem',padding:'1rem' ,overflow: "auto"}}>
+                <pre>{board?.contents}</pre>
+            </div>
+            <div style={{ marginLeft: '17%', marginTop: '2rem', }}>
                 {/* <Button variant="contained" onClick={()=>{}} style={{background:'#3f3c3c',width:'7.5rem',fontWeight:'bold'}} size='large'>Submit</Button> */}
                 <Button variant="contained" onClick={() => window.history.go(-1)} style={{ background: '#3f3c3c', width: '13rem', fontWeight: 'bold', marginLeft: '0.5rem' }} size='large'>Back</Button>
 
