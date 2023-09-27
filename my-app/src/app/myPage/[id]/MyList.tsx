@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import { useRouter } from "next/navigation";
 
 
 interface board {
@@ -22,6 +23,7 @@ interface board {
 export function MyList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
     const [board, setBoard] = useState<board[]>([]);
+    const router = useRouter();
 
     const getList = async () => {
         const userId = cookies.userData.id;
@@ -39,10 +41,14 @@ export function MyList() {
         getList();
     }, []);
 
+    const readBoard = (id : number) => {
+        router.push(`/myPage/read/${id}`);
+    }
+
     const ImageListComponent = (boardOne:board) => {
         if(boardOne.thumbnail!= null){
             return ( 
-            <ImageListItem key={boardOne.thumbnail}>
+            <ImageListItem key={boardOne.thumbnail} onClick = {() => readBoard(boardOne.boardId)}>
                 <img
                     srcSet={`${boardOne.thumbnail}`}
                     src={`${boardOne.thumbnail}`}
@@ -52,7 +58,7 @@ export function MyList() {
             </ImageListItem>)
         } else {
             return (
-                <div style={{display:'inline-block',height:'11rem'}}>
+                <div style={{display:'inline-block',height:'11rem'}} onClick = {() => readBoard(boardOne.boardId)}>
                     <h4 style={{marginTop:'1rem'}}>{boardOne.title}</h4>
                 </div>
             )
