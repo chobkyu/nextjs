@@ -12,6 +12,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { MyList } from './MyList';
+import { FriendList } from './FriendList';
 
 interface userData {
     userId: string,
@@ -105,7 +106,7 @@ export default function MyPage() {
                         <MyList/>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        Item Two
+                        <FriendList/>
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         Item Three

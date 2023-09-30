@@ -13,14 +13,14 @@ export async function GET(request:NextRequest,context:{params:any}) {
             b.userId as friendId,
             b.userName as friendName
         from (
-        select 
-            a.id as user,
-            a.userId,
-            a.userName,
-            b.friendId
-        from next.user a
-        join next.friends b
-        on a.id = b.userId
+            select 
+                a.id as user,
+                a.userId,
+                a.userName,
+                b.friendId
+            from next.user a
+            join next.friends b
+            on a.id = b.userId
         ) a
         join next.user b
         on a.friendId = b.id
