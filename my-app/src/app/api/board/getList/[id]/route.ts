@@ -8,9 +8,7 @@ interface getListDto{
 
 export async function GET(request:NextRequest,context:{params: any}) {
     console.log(context)
-    const queryParam = context.params.id
-
-    const userId = queryParam;
+    const userId = context.params.id
 
     let queryString = `
         select 
