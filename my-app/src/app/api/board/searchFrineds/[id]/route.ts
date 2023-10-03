@@ -5,7 +5,10 @@ export async function GET(request:NextRequest, context:{params:any}){
     const userId = context.params.id;
 
     let qryStr = `
-        select *
+        select 
+            id as user,
+            userId,
+            userName,
         from user
         where userId = ${userId}
     `;

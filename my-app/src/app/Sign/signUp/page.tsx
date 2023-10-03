@@ -36,8 +36,6 @@ export default function SignUp() {
 
         }
 
-        console.log(option)
-
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/signUp`, option)
             .then(res => res.json())
             .then((res) => {
