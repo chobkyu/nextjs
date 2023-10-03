@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
+import { useRouter } from 'next/navigation';
 
 interface friendList {
     user: number,
@@ -17,6 +18,7 @@ interface friendList {
 export function FriendList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
     const [friendList, setFriendList] = useState<friendList[]>([]);
+    const router = useRouter();
 
     const getList = async () => {
         const userId = cookies.userData.id;
@@ -33,10 +35,15 @@ export function FriendList() {
         getList();
     }, []);
 
+    const moveToFriend = (id:number) => {
+        console.log(id)
+        router.push(`/userPage/${id}`);
+    }
+
     const frinedListComponent = (friend: friendList) => {
         return (
             <div style={{height:'3rem',marginTop:'1rem'}}>
-                <div style={{textAlign:'left'}}>
+                <div style={{textAlign:'left'}} onClick={()=>moveToFriend(friend?.friend)}>
                     <h3 style={{padding:'0.01rem',margin:'0.2rem',marginTop:'0.5rem'}}>{friend?.friendName}</h3>
                     <span style={{margin:'0.2rem'}}>{friend?.friendId}</span>
                     <Divider style={{marginTop:'0.5rem'}}/>
