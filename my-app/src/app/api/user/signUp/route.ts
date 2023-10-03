@@ -38,6 +38,8 @@ export async function POST(request:Request){
     }
 }
 
+
+//트랜잭션 적용 예정
 const insertDefaultImg = async (userId:any) => {
     const defaultImg = 'https://alcoholcocktail.s3.ap-northeast-2.amazonaws.com/png-transparent-default-profile-united-states-computer-icons-desktop-free-high-quality-person-icon-miscellaneous-silhouette-symbol.png';
     let queryString = `insert into userImg ( imgUrl, useFlag, userId ) values ('${defaultImg}',true,${userId})`;
