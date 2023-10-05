@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 
 interface board {
@@ -24,12 +24,13 @@ export function MyList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
     const [board, setBoard] = useState<board[]>([]);
     const router = useRouter();
+    const { id } = useParams();
 
     const getList = async () => {
         const userId = cookies.userData.id;
         const option = getOption('GET');
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getList/${userId}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getList/${id}`)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
