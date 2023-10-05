@@ -42,9 +42,9 @@ export function FriendList() {
 
     const frinedListComponent = (friend: friendList) => {
         return (
-            <div style={{height:'3rem',marginTop:'2rem'}}>
+            <div style={{height:'3rem',marginTop:'1.5rem'}}>
                 <div style={{textAlign:'left'}} onClick={()=>moveToFriend(friend?.friend)}>
-                    <h3 style={{padding:'0.01rem',margin:'0.2rem',marginTop:'0.5rem'}}>{friend?.friendName}</h3>
+                    <h3 style={{padding:'0.01rem',margin:'0.2rem'}}>{friend?.friendName}</h3>
                     <span style={{margin:'0.2rem'}}>{friend?.friendId}</span>
                     <Divider style={{marginTop:'0.5rem'}}/>
                 </div>

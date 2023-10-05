@@ -13,6 +13,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import { MyList } from './MyList';
 import { FriendList } from './FriendList';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 
 interface userData {
     userId: string,
@@ -69,6 +70,7 @@ export default function MyPage() {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
     useEffect(() => {
         let userData = cookies.userData;
         if (!userData) {
@@ -92,8 +94,39 @@ export default function MyPage() {
             }
             
         }
-    );
+        );
     }
+
+    const speedDialButton = () => {
+        if(value == 0) {
+            return(
+                <Box>
+                    <SpeedDial
+                        ariaLabel="SpeedDial basic example"
+                        onClick={() => { router.push('/myPage/write') }}
+                        sx={{ position: 'fixed', top: '80%', right: '16px', color: grey[900] }}
+                        icon={<EditIcon fontSize='small' sx={{ color: grey }} />}
+                        style={{ color: 'black' }}
+                    >
+                    </SpeedDial>
+                </Box>
+            )
+        }else if(value==1){
+            return(
+                <Box>
+                    <SpeedDial
+                        ariaLabel="SpeedDial basic example"
+                        onClick={() => { router.push('/searchId') }}
+                        sx={{ position: 'fixed', top: '80%', right: '16px', color: grey[900] }}
+                        icon={<SpeedDialIcon  sx={{ color: grey }} />}
+                        style={{ color: 'black' }}
+                    >
+                    </SpeedDial>
+                </Box>
+            );
+        }
+    }
+    
     return (
         <>
             <header className='card_myPage' style={{ height: '13rem', padding: '1rem', }}>
@@ -137,7 +170,7 @@ export default function MyPage() {
                 <button onClick={() => console.log(cookies)}>test</button>
             </div> */}
 
-            <Box>
+            {/* <Box>
                 <SpeedDial
                     ariaLabel="SpeedDial basic example"
                     onClick={() => { router.push('/myPage/write') }}
@@ -146,8 +179,8 @@ export default function MyPage() {
                     style={{ color: 'black' }}
                 >
                 </SpeedDial>
-            </Box>
-
+            </Box> */}
+            {speedDialButton()}
         </>
     )
 }
