@@ -11,7 +11,8 @@ export async function GET(request:NextRequest,context:{params:any}) {
             a.userName,
             a.friendId as friend,
             b.userId as friendId,
-            b.userName as friendName
+            b.userName as friendName,
+            c.imgUrl
         from (
             select 
                 a.id as user,
@@ -24,7 +25,10 @@ export async function GET(request:NextRequest,context:{params:any}) {
         ) a
         join next.user b
         on a.friendId = b.id
+        left join userImg c
+        on a.friendId = c.userId
         where a.user = ${userId}
+        and c.useFlag = true
     `;
 
     try{

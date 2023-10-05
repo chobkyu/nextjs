@@ -21,6 +21,8 @@ function queryPromise(queryString:string) {
 			}  
 			resolve(results);  
 		});  
+
+	
 	});  
 }  
 
