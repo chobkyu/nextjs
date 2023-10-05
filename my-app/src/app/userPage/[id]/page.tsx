@@ -10,7 +10,8 @@ interface friendDto{
     userId:string,
     userName:string,
     userBirth:Date,
-    myIntro : string
+    myIntro : string,
+    imgUrl : string
 }
 
 export default function UserPage() {
@@ -77,7 +78,7 @@ export default function UserPage() {
         <>
              <header className='card_myPage' style={{ height: '13rem', padding: '1rem', }}>
                 <div style={{ width: '7rem', height: '7rem', borderRadius: '70%', overflow: 'hidden', float: 'left' }}>
-                    <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src='https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png' />
+                    <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={friend?.imgUrl} />
 
                 </div>
                 <div className='profile' style={{ float: 'left', marginLeft: '2rem', width: '10rem' }} >

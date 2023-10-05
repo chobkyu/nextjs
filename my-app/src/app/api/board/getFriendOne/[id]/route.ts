@@ -5,9 +5,12 @@ export async function GET(request:NextRequest, context:{params:any}){
     const friendId = context.params.id;
 
     let qryStr = `
-        select id,userId,userName,userBirth,myIntro
-        from user
-        where id = ${friendId}
+        select a.id,a.userId,a.userName,a.userBirth,a.myIntro,b.imgUrl
+        from user a
+        left join userImg b
+        on a.id = b.userId
+        where a.id = ${friendId}
+        and b.useFlag = true
     `;
 
     try{
