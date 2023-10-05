@@ -13,6 +13,7 @@ interface friendList {
     friend: number,
     friendId: string,
     friendName: string,
+    imgUrl:string
 }
 
 export function FriendList() {
@@ -42,11 +43,15 @@ export function FriendList() {
 
     const frinedListComponent = (friend: friendList) => {
         return (
-            <div style={{height:'3rem',marginTop:'1.5rem'}}>
-                <div style={{textAlign:'left'}} onClick={()=>moveToFriend(friend?.friend)}>
+            <>
+              <div style={{height:'3rem',marginTop:'0.5rem'}}>
+                 <div style={{ width: '3rem', height: '3rem', borderRadius: '70%', overflow: 'hidden', float: 'left' }}>
+                    <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={friend?.imgUrl} />
+                    
+                </div>
+                <div style={{marginLeft:'1rem',float:'left'}} onClick={()=>moveToFriend(friend?.friend)}>
                     <h3 style={{padding:'0.01rem',margin:'0.2rem'}}>{friend?.friendName}</h3>
                     <span style={{margin:'0.2rem'}}>{friend?.friendId}</span>
-                    <Divider style={{marginTop:'0.5rem'}}/>
                 </div>
                 {/* <div style={{ float:'left' }}>
                     <Avatar alt="Remy Sharp"
@@ -59,8 +64,12 @@ export function FriendList() {
 
                 </div> */}
             </div>
+            <Divider style={{marginTop:'1.2rem',width:'100%'}}/>
+            </>
+          
+
         )
-    }
+      }
 
     return (
         <div>
