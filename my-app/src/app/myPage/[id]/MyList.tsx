@@ -42,36 +42,44 @@ export function MyList() {
         getList();
     }, []);
 
-    const readBoard = (id : number) => {
+    const readBoard = (id: number) => {
         router.push(`/myPage/read/${id}`);
     }
 
-    const ImageListComponent = (boardOne:board) => {
-        if(boardOne.thumbnail!= null){
-            return ( 
-            <ImageListItem key={boardOne.thumbnail} onClick = {() => readBoard(boardOne.boardId)}>
-                <img
-                    srcSet={`${boardOne.thumbnail}`}
-                    src={`${boardOne.thumbnail}`}
-                    alt={boardOne.title}
-                    loading="lazy"
-                />
-            </ImageListItem>)
+    const ImageListComponent = (boardOne: board) => {
+
+        if (boardOne.thumbnail != null) {
+            return (
+                <ImageListItem key={boardOne.thumbnail} onClick={() => readBoard(boardOne.boardId)}>
+                    <img
+                        srcSet={`${boardOne.thumbnail}`}
+                        src={`${boardOne.thumbnail}`}
+                        alt={boardOne.title}
+                        loading="lazy"
+                    />
+                </ImageListItem>)
         } else {
             return (
-                <div style={{display:'inline-block',height:'11rem'}} onClick = {() => readBoard(boardOne.boardId)}>
-                    <h4 style={{marginTop:'1rem'}}>{boardOne.title}</h4>
+                <div style={{ display: 'inline-block', height: '11rem' }} onClick={() => readBoard(boardOne.boardId)}>
+                    <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
                 </div>
             )
         }
     }
-    return (
-        <>
+
+    const boardListComponent = () => {
+        return (
             <ImageList sx={{ width: '100%', height: '15rem' }} cols={3} rowHeight={164}>
                 {board.map((boardOne) => (
-                   ImageListComponent(boardOne)
+                    ImageListComponent(boardOne)
                 ))}
-            </ImageList>
+            </ImageList>)
+
+    }
+    
+    return (
+        <>
+            {board.length > 0 ? boardListComponent() : <h2>아직 게시된 게시물이 없습니다</h2>}
         </>
     )
 
