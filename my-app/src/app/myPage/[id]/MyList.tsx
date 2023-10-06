@@ -79,7 +79,7 @@ export function MyList() {
 
     return (
         <>
-            {board.length > 0 ? boardListComponent() : <h3>아직 게시된 게시물이 없습니다</h3>}
+            {board?.length > 0 ? boardListComponent() : <h3>아직 게시된 게시물이 없습니다</h3>}
         </>
     )
 
