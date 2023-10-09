@@ -13,7 +13,7 @@ export async function GET(request:NextRequest, context:{params:any}){
        from user a
        left join userImg b
        on a.id = b.userId
-       where a.userId = '${userId}'
+       where a.userId like '%${userId}%'
     `;
 
     try {
