@@ -39,6 +39,9 @@ export default function SearchId() {
                 </p>
                 <Button variant="contained"  style={{background:'black',fontWeight:'bold',}} size='large' onClick={searchUser}>search</Button>
             </header>
+            <div>
+                
+            </div>
         </>
     )
 }
