@@ -17,9 +17,7 @@ export default function Login() {
     const [password, setPassword] = useState<string>('');
 
     const login = () => {
-        console.log(userId);
-        console.log(password);
-        console.log(process.env.NEXT_PUBLIC_API_URL)
+        
         const option = {
             method: 'POST',
             headers: {

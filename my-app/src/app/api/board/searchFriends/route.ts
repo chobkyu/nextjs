@@ -1,19 +1,26 @@
 import { queryPromise } from "@/app/api/config/queryFunc";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request:NextRequest, context:{params:any}){
-    const userId = context.params.id;
+export async function GET(request:NextRequest){
+    const urlQry = request.nextUrl.searchParams;
 
+    const searchId = urlQry.get('searchId');
+    const userId = urlQry.get('userId');
+    
     let qryStr = `
        select 
             a.id as user,
             a.userId,
             a.userName,
-            b.imgUrl
+            c.imgUrl
        from user a
-       left join userImg b
+       left outer join friends b
        on a.id = b.userId
-       where a.userId like '%${userId}%'
+       left join userImg c
+       on a.id = c.userId
+       where b.userId is NULL 
+       and a.userId like '%${searchId}%'
+       and not a.userId in ('${userId}')
     `;
 
     try {

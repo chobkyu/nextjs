@@ -60,11 +60,11 @@ export function FriendList() {
 
     const moveToFriend = (id: number) => {
         console.log(id)
-        handleOpen();
+        //handleOpen();
         //window.open(`/userPage/${id}`, "_blank", "noopener, noreferrer");
 
 
-        // router.push(`/userPage/${id}`);
+        router.push(`/userPage/${id}`);
     }
 
     const frinedListComponent = (friend: friendList) => {

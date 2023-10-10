@@ -7,6 +7,7 @@ import { checkCookie } from '../Common/checkCookie';
 import { useCookies } from 'react-cookie';
 import { useRouter } from 'next/navigation';
 import Divider from '@mui/material/Divider';
+import { getOption } from '../Common/option';
 
 const ariaLabel = { 'aria-label': 'description' };
 
@@ -45,7 +46,14 @@ export default function SearchId() {
     },[]);
 
     const searchUser = () => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/searchFriends/${friendId}`)
+        let user = cookies.userData;
+        const userId = user.id;
+        console.log(friendId);
+        if(friendId==''){
+            alert('검색어를 입력해주세요');
+            return;
+        }
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/searchFriends?searchId=${friendId}&userId=${userId}`)
             .then((res) => res.json())
             .then((res) => {
                 console.log(res);
@@ -62,7 +70,33 @@ export default function SearchId() {
         //window.open(`/userPage/${id}`, "_blank", "noopener, noreferrer");
 
 
-        // router.push(`/userPage/${id}`);
+        //router.push(`/userPage/${id}`);
+    }
+
+    const addFriend = (id:number) => {
+        const friendId = id;
+        const userId = cookies.userData.id;
+
+        const obj = { userId, friendId };
+
+        const option = getOption('POST',obj);
+
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/askFriend`, option)
+            .then((res) => res.json())
+            .then((res) => {
+                console.log(res);
+                if (res.success) {
+                    alert('친구 신청 완료');
+                    return;
+                } else {
+                    console.log(res.err);
+                    alert(res.msg);
+                    return;
+                }
+            }
+            );
+
+
     }
 
     const frinedListComponent = (friend: searchFriendList) => {
@@ -70,12 +104,15 @@ export default function SearchId() {
             <>
                 <div style={{ height: '3rem', marginTop: '0.5rem' }}>
                     <div style={{ width: '3rem', height: '3rem', borderRadius: '70%', overflow: 'hidden', float: 'left' }}>
-                        <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={friend?.imgUrl} />
+                        <img style={{ width: '100%', height: '100%',  objectFit: 'cover' }} src={friend?.imgUrl} />
 
                     </div>
-                    <div style={{ marginLeft: '1rem', float: 'left' }} onClick={() => moveToFriend(friend?.user)}>
+                    <div style={{ marginLeft: '1rem', float: 'left',width:"60%" }} onClick={() => moveToFriend(friend?.user)}>
                         <h3 style={{ padding: '0.01rem', margin: '0.2rem' }}>{friend?.userName}</h3>
                         <span style={{ margin: '0.2rem' }}>{friend?.userId}</span>
+                    </div>
+                    <div style={{float:'left',marginTop:'4%'}}>
+                        <Button variant="contained"  style={{background:'#3f3c3c',fontWeight:'bold',}} size='small' onClick={()=>addFriend(friend?.user)}>Add</Button>
                     </div>
                     {/* <div style={{ float:'left' }}>
                     <Avatar alt="Remy Sharp"
@@ -102,6 +139,7 @@ export default function SearchId() {
                 </p>
                 <Button variant="contained"  style={{background:'black',fontWeight:'bold',}} size='large' onClick={searchUser}>search</Button>
             </header>
+            <Divider style={{marginTop:'0.5rem'}}/>
             <div>
                 {friendList.map((friend) => (
                     frinedListComponent(friend)
