@@ -45,7 +45,9 @@ export default function SearchId() {
     },[]);
 
     const searchUser = () => {
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/searchFriends/${friendId}`)
+        let user = cookies.userData;
+        const userId = user.userId;
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/searchFriends?searchId=${friendId}&userId=${userId}`)
             .then((res) => res.json())
             .then((res) => {
                 console.log(res);
@@ -62,7 +64,7 @@ export default function SearchId() {
         //window.open(`/userPage/${id}`, "_blank", "noopener, noreferrer");
 
 
-        // router.push(`/userPage/${id}`);
+        //router.push(`/userPage/${id}`);
     }
 
     const frinedListComponent = (friend: searchFriendList) => {
