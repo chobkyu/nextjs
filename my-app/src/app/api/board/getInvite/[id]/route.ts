@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryPromise } from "../../config/queryFunc";
+import { queryPromise } from "../../../config/queryFunc";
 
 
 export async function GET(request:NextRequest,context:{params:any}){
@@ -29,9 +29,11 @@ export async function GET(request:NextRequest,context:{params:any}){
     `;
 
     try{
-        const res = await queryPromise(qryStr);
+        const res :any= await queryPromise(qryStr);
 
-        return NextResponse.json({status:200, data:res});
+        if(res.length==0) return NextResponse.json({status:200,success:false,msg:'요청이 없습니다'})
+
+        return NextResponse.json({status:200, success:true, data:res});
     }catch(err){
         console.log(err);
         return NextResponse.json({err});
