@@ -12,11 +12,14 @@ export async function GET(request:NextRequest){
             a.id as user,
             a.userId,
             a.userName,
-            b.imgUrl
+            c.imgUrl
        from user a
-       left join userImg b
+       left outer join friends b
        on a.id = b.userId
-       where a.userId like '%${searchId}%'
+       left join userImg c
+       on a.id = c.userId
+       where b.userId is NULL 
+       and a.userId like '%${searchId}%'
        and not a.userId in ('${userId}')
     `;
 

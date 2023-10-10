@@ -47,6 +47,11 @@ export default function SearchId() {
     const searchUser = () => {
         let user = cookies.userData;
         const userId = user.userId;
+        console.log(friendId);
+        if(friendId==''){
+            alert('검색어를 입력해주세요');
+            return;
+        }
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/searchFriends?searchId=${friendId}&userId=${userId}`)
             .then((res) => res.json())
             .then((res) => {
@@ -67,6 +72,13 @@ export default function SearchId() {
         //router.push(`/userPage/${id}`);
     }
 
+    const addFriend = (id:number) => {
+        const friendId = id;
+        const userId = cookies.userData.userId;
+
+
+    }
+
     const frinedListComponent = (friend: searchFriendList) => {
         return (
             <>
@@ -75,9 +87,12 @@ export default function SearchId() {
                         <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={friend?.imgUrl} />
 
                     </div>
-                    <div style={{ marginLeft: '1rem', float: 'left' }} onClick={() => moveToFriend(friend?.user)}>
+                    <div style={{ marginLeft: '1rem', float: 'left',width:"60%" }} onClick={() => moveToFriend(friend?.user)}>
                         <h3 style={{ padding: '0.01rem', margin: '0.2rem' }}>{friend?.userName}</h3>
                         <span style={{ margin: '0.2rem' }}>{friend?.userId}</span>
+                    </div>
+                    <div style={{float:'left',marginTop:'4%'}}>
+                        <Button variant="contained"  style={{background:'#3f3c3c',fontWeight:'bold',}} size='small' onClick={()=>addFriend(friend?.user)}>Add</Button>
                     </div>
                     {/* <div style={{ float:'left' }}>
                     <Avatar alt="Remy Sharp"
@@ -104,6 +119,7 @@ export default function SearchId() {
                 </p>
                 <Button variant="contained"  style={{background:'black',fontWeight:'bold',}} size='large' onClick={searchUser}>search</Button>
             </header>
+            <Divider style={{marginTop:'0.5rem'}}/>
             <div>
                 {friendList.map((friend) => (
                     frinedListComponent(friend)
