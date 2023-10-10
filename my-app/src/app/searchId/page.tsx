@@ -84,12 +84,13 @@ export default function SearchId() {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/askFriend`, option)
             .then((res) => res.json())
             .then((res) => {
+                console.log(res);
                 if (res.success) {
                     alert('친구 신청 완료');
                     return;
                 } else {
                     console.log(res.err);
-                    alert('에러 발생');
+                    alert(res.msg);
                     return;
                 }
             }
