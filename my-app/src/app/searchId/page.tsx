@@ -98,7 +98,7 @@ function SimpleDialog(props: SimpleDialogProps) {
                             <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={friend?.imgUrl} />
 
                         </div>
-                        <div style={{ marginLeft: '1rem', float: 'left', width: "60%" }}>
+                        <div style={{ marginLeft: '1rem', float: 'left', width: "50%" }}>
                             <h3 style={{ padding: '0.01rem', margin: '0.2rem' }}>{friend?.userName}</h3>
                             <span style={{ margin: '0.2rem' }}>{friend?.userId}</span>
                         </div>
