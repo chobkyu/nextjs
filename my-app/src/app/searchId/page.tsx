@@ -29,7 +29,7 @@ interface searchFriendList {
     userName: string,
     imgUrl: string
 }
-
+ 
 const style = {
     position: 'absolute' as 'absolute',
     top: '50%',
@@ -194,7 +194,7 @@ export default function SearchId() {
 
     const frinedListComponent = (friend: searchFriendList) => {
         return (
-            <>
+            <div>
                 <div style={{ height: '3rem', marginTop: '0.5rem' }}>
                     <div style={{ width: '3rem', height: '3rem', borderRadius: '70%', overflow: 'hidden', float: 'left' }}>
                         <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={friend?.imgUrl} />
@@ -207,19 +207,10 @@ export default function SearchId() {
                     <div style={{ float: 'left', marginTop: '4%' }}>
                         <Button variant="contained" style={{ background: '#3f3c3c', fontWeight: 'bold', }} size='small' onClick={() => addFriend(friend?.user)}>Add</Button>
                     </div>
-                    {/* <div style={{ float:'left' }}>
-                    <Avatar alt="Remy Sharp"
-                        src="https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png"
-                        sx={{ width: 36, height: 36 }} />
-
-                </div> */}
-                    {/* <div className='profile' style={{ float: 'left', marginLeft: '1rem', marginTop: '0.5rem', width: '10rem', padding: '0.01rem' }} >
-
-
-                </div> */}
+                 
                 </div>
                 <Divider style={{ marginTop: '1.2rem', width: '100%' }} />
-            </>
+            </div>
 
 
         )
@@ -242,10 +233,10 @@ export default function SearchId() {
     return (
         <>
             <header style={{ textAlign: 'center' }}>
-                <p>
-                    <Input placeholder="Type your friend's id" style={{ marginTop: '1.5rem' }} inputProps={ariaLabel} onChange={(e: any) => setFriendId(e.target.value)} />
-                </p>
-                <Button variant="contained" style={{ background: 'black', fontWeight: 'bold', }} size='large' onClick={searchUser}>search</Button>
+                
+                <Input placeholder="Type your friend's id" style={{ marginTop: '1.5rem' }} inputProps={ariaLabel} onChange={(e: any) => setFriendId(e.target.value)} />
+               
+                <Button variant="contained" style={{ background: 'black', fontWeight: 'bold',display:'block',marginLeft:'35%',marginTop:'0.5rem' }} size='large' onClick={searchUser}>search</Button>
             </header>
             <Divider style={{ marginTop: '0.5rem' }} />
             <div>
@@ -260,6 +251,7 @@ export default function SearchId() {
                 selectedValue={selectedValue}
                 open={open}
                 onClose={handleClose}
+                key={selectedValue}
             />
         </>
     )
