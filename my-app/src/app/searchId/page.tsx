@@ -76,6 +76,24 @@ function SimpleDialog(props: SimpleDialogProps) {
             );
     }
 
+    const addFriend = (id:number) => {
+        const userId = cookies.userData.id;
+
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/permitFriend?userId=${userId}&friendId=${id}`)
+            .then((res) => res.json())
+            .then((res) => {
+                if(res.success){
+                    alert('친구 요청을 수락했습니다');
+                    handleClose();
+                }else{
+                    alert(res.msg);
+                    return;
+                }
+               
+            }
+        );
+    }
+
     useEffect(() => {
         getInviteList();
     }, []);
@@ -103,7 +121,7 @@ function SimpleDialog(props: SimpleDialogProps) {
                             <span style={{ margin: '0.2rem' }}>{friend?.userId}</span>
                         </div>
                         <div style={{ float: 'left', marginTop: '4%' }}>
-                            <Button variant="contained" style={{ background: '#3f3c3c', fontWeight: 'bold', }} size='small'>Add</Button>
+                            <Button variant="contained" style={{ background: '#3f3c3c', fontWeight: 'bold', }} size='small' onClick={() => addFriend(friend.user)}>Add</Button>
                         </div>
                         {/* <div style={{ float:'left' }}>
             <Avatar alt="Remy Sharp"

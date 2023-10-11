@@ -6,21 +6,30 @@ export async function GET(request:NextRequest){
 
     const searchId = urlQry.get('searchId');
     const userId = urlQry.get('userId');
+
+    console.log(searchId);
+    console.log(userId);
     
     let qryStr = `
-       select 
+        select 
             a.id as user,
             a.userId,
             a.userName,
             c.imgUrl
-       from user a
-       left outer join friends b
-       on a.id = b.userId
-       left join userImg c
-       on a.id = c.userId
-       where b.userId is NULL 
-       and a.userId like '%${searchId}%'
-       and not a.userId in ('${userId}')
+        from user a
+        left outer join (
+            select 
+                friendId
+            from friends
+            where userId =10
+        ) b
+        on a.id = b.friendId
+        left join userImg c
+        on a.id = c.userId
+        where b.friendId IS NULL
+        and not a.id in ('${userId}')
+        and a.userId like '%${searchId}%'
+        and c.useFlag = true
     `;
 
     try {
