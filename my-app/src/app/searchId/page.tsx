@@ -82,7 +82,13 @@ function SimpleDialog(props: SimpleDialogProps) {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/permitFriend?userId=${userId}&friendId=${id}`)
             .then((res) => res.json())
             .then((res) => {
-                console.log(res);
+                if(res.success){
+                    alert('친구 요청을 수락했습니다');
+                    handleClose();
+                }else{
+                    alert('오류가 발생했습니다.');
+                    return;
+                }
                
             }
         );
