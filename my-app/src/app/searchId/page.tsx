@@ -86,7 +86,7 @@ function SimpleDialog(props: SimpleDialogProps) {
                     alert('친구 요청을 수락했습니다');
                     handleClose();
                 }else{
-                    alert('오류가 발생했습니다.');
+                    alert(res.msg);
                     return;
                 }
                

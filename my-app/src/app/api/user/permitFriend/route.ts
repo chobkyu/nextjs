@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { queryPromise } from "../../config/queryFunc";
 
 export async function GET(request:NextRequest){
     const mysql = require('mysql2/promise');
@@ -19,6 +20,11 @@ export async function GET(request:NextRequest){
     const friendId = urlQry.get('friendId');
 
     try{
+        //check friend
+        const check = await checkFriend(userId, friendId);
+        
+        if(!check.success) return NextResponse.json({status:201,success:false,msg:'이미 친구인 사이입니다.'});
+
         await connection.beginTransaction()
 
         const insQry1 = `insert into friends(userId, friendId) values (${userId},${friendId})`;
@@ -38,5 +44,20 @@ export async function GET(request:NextRequest){
         return NextResponse.json({err})
     }finally{
         connection.release();
+    }
+}
+
+
+const checkFriend = async (userId:any, friendId:any) => {
+    try{
+        let qryStr = `select * from friends where userId = ${userId} and friendId = ${friendId}`
+
+        const res:any = await queryPromise(qryStr);
+
+        if(res.length>0) return {success:false};
+        else return {success:true};
+    }catch(err){
+        console.log(err);
+        return {success:false};
     }
 }
