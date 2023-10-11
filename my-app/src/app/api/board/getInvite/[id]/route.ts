@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { queryPromise } from "../../../config/queryFunc";
 
 
-export async function GET(context:{params:any}){
+export async function GET(request:Request,context:{params:any}){
     const userId = context.params.id;
 
     let qryStr = `
