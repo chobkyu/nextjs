@@ -129,6 +129,9 @@ export default function Write() {
             })
     }
 
+    /**https://next-s3-upload.codingvalue.com/next-image 
+     * image upload
+    */
     return (
         <div style={{ marginLeft: '1rem',marginTop:'2rem' }}>  
             <ThemeProvider theme={customTheme(outerTheme)}>
