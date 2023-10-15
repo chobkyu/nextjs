@@ -40,6 +40,13 @@ export default function Login() {
     }
 
    
+    const tryLogin = (e:any) => {
+        console.log(e.code)
+        if(e.code === 'Enter'){
+            login();
+        }
+    }
+
     return (
         <div style={{textAlign:'center',marginTop:'12rem'}}>
             {/* <TextField id="outlined-basic" label="ID" variant="outlined" onChange={(e: any) => setUserId(e.target.value)} />
@@ -52,7 +59,7 @@ export default function Login() {
                 <Input placeholder='ID' inputProps={ariaLabel} onChange={(e: any) => setUserId(e.target.value)}/>
             </p>
             <p>
-                <Input placeholder='PASSWORD' style={{marginTop:'1.5rem'}} type='password' inputProps={ariaLabel} onChange={(e: any) => setPassword(e.target.value)}/>
+                <Input placeholder='PASSWORD' style={{marginTop:'1.5rem'}} type='password' inputProps={ariaLabel} onChange={(e: any) => setPassword(e.target.value) } onKeyDown={(e:any)=>tryLogin(e)}/>
             </p>
             <Button variant="contained" onClick={() => login()} style={{background:'black',fontWeight:'bold'}} size='large'>Login</Button>
 
