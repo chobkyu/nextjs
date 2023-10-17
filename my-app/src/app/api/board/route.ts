@@ -11,7 +11,11 @@ interface writeData {
 export async function POST(request : Request) {
     const body = await request.json();
 
-    const setWriteData :writeData = { ...body };
+    const write = body.write;
+    const imgList = body.urlArr
+
+    console.log(imgList);
+    const setWriteData :writeData = { ...write };
     //const date = new Date();
     let queryString = `
         insert into myBoard(
@@ -22,7 +26,9 @@ export async function POST(request : Request) {
     `
     
     try{
-        await queryPromise(queryString);
+        const res :any = await queryPromise(queryString);
+
+        console.log(res['insertId']);
 
         return NextResponse.json({status:201,success:true});
     } catch(err) {

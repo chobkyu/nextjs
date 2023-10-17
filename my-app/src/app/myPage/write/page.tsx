@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { Button } from '@mui/material';
 import { getOption } from '../../Common/option'
-import { useS3Upload } from "next-s3-upload";
+
 
 interface writeData {
   userId: number,
@@ -113,10 +113,10 @@ export default function Write() {
   }
 
   const submitWriteData = () => {
-    console.log(write);
+    const data = { write , urlArr }
+    const option = getOption('POST', data);
 
-    const option = getOption('POST', write);
-
+    console.log(option);
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board`, option)
       .then(res => res.json())
       .then((res) => {
@@ -132,44 +132,43 @@ export default function Write() {
 
   //https://songsong.dev/entry/S3%EC%97%90-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%97%85%EB%A1%9C%EB%93%9C%ED%95%98%EB%8A%94-%EC%84%B8-%EA%B0%80%EC%A7%80-%EB%B0%A9%EB%B2%95
   // file 데이터
-  const [image, setImage] = useState<any>(null);
-  const [image2, setImage2] = useState<any>(null);
+
 
   const [imageList, setImageList] = useState<any[]>([]);
-
-  // 화면 표시를 위한 임시 url
-  const [createObjectURL, setCreateObjectURL] = useState(null);
+  const [imgUrlList, setImgUrlList] = useState<string[]>([]);
+  const [countImg, setCountImg] = useState<string>('첨부파일');
+  const urlArr: string[] =[];
   // 클라이언트에서 업로드 (aws-sdk getsignedurl 이용)
 
   // 화면 상단에 이미지 표시
   const uploadToClient = (e: any) => {
-    if(e.target.files.length>4){
+    if (e.target.files.length > 4) {
       alert('이미지는 4개까지 업로드 하실 수 있습니다');
       setImageList([]);
       return;
     }
 
     const imgArr = new Array();
-    if(e.target.files){
-      for(let i = 0; i<e.target.files.length; i++){
+    if (e.target.files) {
+      for (let i = 0; i < e.target.files.length; i++) {
         const img = e.target.files[i];
         imgArr.push(img);
       }
     }
-
+    setCountImg(`${e.target.files.length}개의 파일`)
     setImageList(imgArr);
     // if (e.target.files && e.target.files[0]) {
     //   const i = e.target.files[0];
     //   setImage(i);
-  
+
     // }
-  
+
   };
 
 
   const uploadImgClient = async () => {
     // ...중략
-    if(imageList === null) return;
+    if (imageList === null) return;
     const imgListArr = new Array();
 
     imageList.map((image) => {
@@ -181,10 +180,6 @@ export default function Write() {
 
       imgListArr.push(body)
     });
-    
-
-    
-    ;
 
     try {
       // 1단계 : signed url 가져오기
@@ -201,8 +196,8 @@ export default function Write() {
       // 이미 파일 이름이나 경로 등은 url 받아올 때 지정을 다 해놨으므로,
       // image 파일 객체와 Content-type 정보만 넣어서 보냄
       
-      for(var i =0; i<signedUrl.length; i++){
-        try{
+      for (var i = 0; i < signedUrl.length; i++) {
+        try {
           const uploadRes = await fetch(signedUrl[i], {
             method: "PUT",
             body: imageList[i],
@@ -210,16 +205,20 @@ export default function Write() {
               "Content-type": imageList[i].type,
             },
           });
-    
+
           console.log(uploadRes);
-        }catch(err){
+          urlArr.push(uploadRes.url.split('?')[0])
+        } catch (err) {
           console.log(err);
           alert('이미지 업로드 중 에러발생');
           return;
         }
-        
+
       }
-      
+      console.log(urlArr);
+      //setImgUrlList([...urlArr]);
+      //console.log(imgUrlList)
+      submitWriteData();
     } catch (err) {
       console.log(err);
     }
@@ -245,23 +244,18 @@ export default function Write() {
       </ThemeProvider>
 
       <div className="filebox" style={{ marginTop: '1rem' }}>
-        <input className="upload-name" value="첨부파일" placeholder="첨부파일" />
+        <input className="upload-name" value={countImg} placeholder="첨부파일" />
         <label htmlFor="file">파일찾기</label>
-        <input type="file" id="file" />
+        <input type="file" id="file" multiple onChange={uploadToClient} />
       </div>
 
       <div style={{ marginLeft: '13%', marginTop: '1rem' }}>
-        <Button variant="contained" onClick={submitWriteData} style={{ background: '#3f3c3c', width: '7.5rem', fontWeight: 'bold' }} size='large'>Submit</Button>
+        <Button variant="contained" onClick={uploadImgClient} style={{ background: '#3f3c3c', width: '7.5rem', fontWeight: 'bold' }} size='large'>Submit</Button>
         <Button variant="contained" onClick={() => window.history.go(-1)} style={{ background: '#3f3c3c', width: '7.5rem', fontWeight: 'bold', marginLeft: '0.5rem' }} size='large'>Cancel</Button>
 
       </div>
 
-      <div>
-        <input name="myImage" type="file" multiple onChange={uploadToClient} />
-        <button type="submit" onClick={uploadImgClient}>
-          클라이언트에서 바로 업로드
-        </button>
-      </div>
+  
 
     </div>
   )
