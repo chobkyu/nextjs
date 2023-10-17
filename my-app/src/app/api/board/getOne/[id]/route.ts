@@ -29,13 +29,10 @@ export async function GET(request:NextRequestWithAuth, context:{params:any}){
             b.contents,
             b.isModified,
             b.dateTime,
-            c.imgUrl,
             d.imgUrl as userImg
         from next.user a
         left join next.myBoard b
         on a.id = b.userId
-        left join next.myBoardImg c
-        on b.id = c.boardId
         left join next.userImg d
         on a.id = d.userId
         where b.id = ${boardId}
