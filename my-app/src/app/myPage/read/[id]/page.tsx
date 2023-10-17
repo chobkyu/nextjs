@@ -8,6 +8,7 @@ import { useCookies } from 'react-cookie';
 import { Button } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Avatar from '@mui/material/Avatar';
+import ImgList from "./ImageList";
 
 
 
@@ -61,7 +62,7 @@ export default function ReadOne(props: any) {
                 </div>
                 <div style={{ float:'left' }}>
                     <Avatar alt="Remy Sharp"
-                        src="https://texttokbucket.s3.ap-northeast-2.amazonaws.com/5875129.png"
+                        src={board?.userImg}
                         sx={{ width: 36, height: 36 }} />
 
                 </div>
@@ -71,9 +72,11 @@ export default function ReadOne(props: any) {
                 </div>
             </header>
             <div className="card_myPage" style={{width:'86%',height:'24rem',marginTop:'2rem',padding:'1rem' ,overflow: "auto"}}>
-                {board?.imgUrl != null ? <>
+                {/* {board?.imgUrl != null ? <>
                         <img src={board.imgUrl[0]}></img>
-                    </>: null}
+                    </>: null} */}
+
+                <ImgList/>
                 <pre>{board?.contents}</pre>
             </div>
             <div style={{ marginLeft: '17%', marginTop: '2rem', }}>
