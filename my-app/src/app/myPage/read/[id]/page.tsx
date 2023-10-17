@@ -71,7 +71,7 @@ export default function ReadOne(props: any) {
                    
                 </div>
             </header>
-            <div className="card_myPage" style={{width:'86%',height:'24rem',marginTop:'2rem',padding:'1rem' ,overflow: "auto"}}>
+            <div className="card_myPage" style={{width:'86%',height:'auto',marginTop:'2rem',padding:'1rem' ,overflow: "auto"}}>
                 {/* {board?.imgUrl != null ? <>
                         <img src={board.imgUrl[0]}></img>
                     </>: null} */}

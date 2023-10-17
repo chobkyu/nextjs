@@ -37,7 +37,7 @@ export default function ImgList() {
     return (
         <>
             {imgList.length>0 && loading? 
-            <ImageList sx={{ width: 300, height: 300 }} cols={1} rowHeight={500}>
+            <ImageList sx={{ width: 300, height: 'auto' }} cols={1} rowHeight={500}>
                 {imgList.map((item) => (
                     <ImageListItem key={item?.id}>
                         <img
