@@ -135,7 +135,6 @@ export default function Write() {
 
 
   const [imageList, setImageList] = useState<any[]>([]);
-  const [imgUrlList, setImgUrlList] = useState<string[]>([]);
   const [countImg, setCountImg] = useState<string>('첨부파일');
   const urlArr: string[] =[];
   // 클라이언트에서 업로드 (aws-sdk getsignedurl 이용)
