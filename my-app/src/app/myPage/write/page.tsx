@@ -130,45 +130,67 @@ export default function Write() {
       })
   }
 
-
+  //https://songsong.dev/entry/S3%EC%97%90-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%97%85%EB%A1%9C%EB%93%9C%ED%95%98%EB%8A%94-%EC%84%B8-%EA%B0%80%EC%A7%80-%EB%B0%A9%EB%B2%95
   // file 데이터
   const [image, setImage] = useState<any>(null);
+  const [image2, setImage2] = useState<any>(null);
+
+  const [imageList, setImageList] = useState<any[]>([]);
+
   // 화면 표시를 위한 임시 url
   const [createObjectURL, setCreateObjectURL] = useState(null);
   // 클라이언트에서 업로드 (aws-sdk getsignedurl 이용)
 
   // 화면 상단에 이미지 표시
   const uploadToClient = (e: any) => {
-    // ...중략
-    if (e.target.files && e.target.files[0]) {
-      const i = e.target.files[0];
-      setImage(i);
-  
-      /*
-      화면 상단에 현재 input에 추가한 파일 표시
-      실제 S3 업로드X, 클라이언트에서만 처리하는 것으로
-      URL.createObjectURL : file객체를 이용하여 임시 url 생성하여 이미지 표시한다
-      mdn : https://developer.mozilla.org/ko/docs/Web/API/URL/createObjectURL
-      */
-      //setCreateObjectURL(URL.createObjectURL(i));
+    if(e.target.files.length>4){
+      alert('이미지는 4개까지 업로드 하실 수 있습니다');
+      setImageList([]);
+      return;
     }
+
+    const imgArr = new Array();
+    if(e.target.files){
+      for(let i = 0; i<e.target.files.length; i++){
+        const img = e.target.files[i];
+        imgArr.push(img);
+      }
+    }
+
+    setImageList(imgArr);
+    // if (e.target.files && e.target.files[0]) {
+    //   const i = e.target.files[0];
+    //   setImage(i);
+  
+    // }
+  
   };
 
 
   const uploadImgClient = async () => {
     // ...중략
-    if(image === null) return;
-    const body = {
-      name:
-        "client/" + Math.random().toString(36).substring(2, 11) + image.name,
-      type: image.type,
-    };
+    if(imageList === null) return;
+    const imgListArr = new Array();
+
+    imageList.map((image) => {
+      const body = {
+        name:
+          "client/" + Math.random().toString(36).substring(2, 11) + image.name,
+        type: image.type,
+      };
+
+      imgListArr.push(body)
+    });
+    
+
+    
+    ;
 
     try {
       // 1단계 : signed url 가져오기
       const urlRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media/client`, {
         method: "POST",
-        body: JSON.stringify(body),
+        body: JSON.stringify(imgListArr),
       });
       const data = await urlRes.json();
       const signedUrl = data.url;
@@ -178,15 +200,26 @@ export default function Write() {
       // 2단계 : 가져온 url로 put 요청 보내기
       // 이미 파일 이름이나 경로 등은 url 받아올 때 지정을 다 해놨으므로,
       // image 파일 객체와 Content-type 정보만 넣어서 보냄
-      const uploadRes = await fetch(signedUrl, {
-        method: "PUT",
-        body: image,
-        headers: {
-          "Content-type": image.type,
-        },
-      });
-
-      console.log(uploadRes);
+      
+      for(var i =0; i<signedUrl.length; i++){
+        try{
+          const uploadRes = await fetch(signedUrl[i], {
+            method: "PUT",
+            body: imageList[i],
+            headers: {
+              "Content-type": imageList[i].type,
+            },
+          });
+    
+          console.log(uploadRes);
+        }catch(err){
+          console.log(err);
+          alert('이미지 업로드 중 에러발생');
+          return;
+        }
+        
+      }
+      
     } catch (err) {
       console.log(err);
     }
@@ -224,7 +257,7 @@ export default function Write() {
       </div>
 
       <div>
-        <input name="myImage" type="file" onChange={uploadToClient} />
+        <input name="myImage" type="file" multiple onChange={uploadToClient} />
         <button type="submit" onClick={uploadImgClient}>
           클라이언트에서 바로 업로드
         </button>
