@@ -67,7 +67,7 @@ export function MyList() {
 
     const getColor = () => {
         const idx = Math.floor(Math.random()*16);
-        console.log(idx);
+        //console.log(idx);
         return colorArr[idx];
     }
     const ImageListComponent = (boardOne: board) => {

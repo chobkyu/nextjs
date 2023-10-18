@@ -14,6 +14,7 @@ import Typography from '@mui/material/Typography';
 import { MyList } from './MyList';
 import { FriendList } from './FriendList';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 interface userData {
     userId: string,
@@ -126,6 +127,17 @@ export default function MyPage() {
             );
         }
     }
+
+    const logOut = () => {
+        const ok = confirm("Are you sure you want to log out?");
+
+        if(ok){
+            
+            removeCookie('userData', { path: '/' });
+            router.push('/');
+        }
+        
+    }
     
     return (
         <>
@@ -135,9 +147,10 @@ export default function MyPage() {
 
                 </div>
                 <div className='profile' style={{ float: 'left', marginLeft: '2rem', width: '10rem' }} >
-                    <h1>{user?.userName}</h1>
+                    <h1>{user?.userName}</h1> 
                     <span>{user?.userId}</span>
                 </div>
+                <div style={{float:'left',marginTop:'2rem'}}><LogoutIcon onClick={logOut}/></div>
                 <div className='hamadi' style={{ display: 'inline-block', width: '100%', marginTop: '1.5rem' }}>
                     {user?.myIntro}
                 </div>
