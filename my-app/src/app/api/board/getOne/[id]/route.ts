@@ -37,6 +37,7 @@ export async function GET(request:NextRequestWithAuth, context:{params:any}){
         on a.id = d.userId
         where b.id = ${boardId}
         and b.isDeleted = false
+        and d.useFlag = true
     `;
 
     try{

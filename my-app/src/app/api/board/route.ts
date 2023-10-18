@@ -16,12 +16,13 @@ export async function POST(request : Request) {
 
     console.log(imgList);
     const setWriteData :writeData = { ...write };
+    const thumbnail = imgList.length > 0 ? `'${imgList[0]}'` : null;
     //const date = new Date();
     let queryString = `
         insert into myBoard(
             title,contents,isDeleted,isModified,dateTime,userId,thumbnail
         ) values (
-            '${setWriteData.title}','${setWriteData.contents}',false,false,'${new Date()}',${setWriteData.userId},'${imgList[0]}'
+            '${setWriteData.title}','${setWriteData.contents}',false,false,'${new Date()}',${setWriteData.userId},${thumbnail}
         );
     `
     

@@ -90,7 +90,7 @@ export default function UserPage() {
                 </div>
             </header>
 
-            <div className='Tab' style={{  height: '3rem',textAlign:'center',marginTop:'0.7rem' }}>
+            <div className='Tab' style={{ height:'auto', textAlign:'center',marginTop:'0.7rem' }}>
                 <MyList/>
             </div>
         </>

@@ -46,7 +46,7 @@ export function FriendList() {
     const getList = async () => {
         const userId = cookies.userData.id;
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getFriends/${userId}`)
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getFriends/${userId}`,{ cache: 'no-cache' })
             .then(res => res.json())
             .then(res => {
                 console.log(res);
