@@ -20,6 +20,25 @@ interface board {
     thumbnail: string,
 }
 
+const colorArr = [
+    '#9044f4',
+    '$81F712',
+    '#D0EE17',
+    '#F52E7F',
+    '#27D4B6',
+    '#FF0081',
+    '#FF9B00',
+    '#FC00FF',
+    '#00FFA0',
+    '#95FF00',
+    '#008FFF',
+    '#5B5EFC',
+    '#37D0FD',
+    '#FFE699',
+    '#90FFCA',
+    '#FF7878',
+]
+
 export function MyList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
     const [board, setBoard] = useState<board[]>([]);
@@ -46,6 +65,11 @@ export function MyList() {
         router.push(`/myPage/read/${id}`);
     }
 
+    const getColor = () => {
+        const idx = Math.floor(Math.random()*16);
+        console.log(idx);
+        return colorArr[idx];
+    }
     const ImageListComponent = (boardOne: board) => {
 
         if (boardOne.thumbnail != null) {
@@ -60,7 +84,7 @@ export function MyList() {
                 </ImageListItem>)
         } else {
             return (
-                <div style={{ display: 'inline-block', height: '11rem' }} onClick={() => readBoard(boardOne.boardId)}>
+                <div style={{ display: 'inline-block', height: '11rem', background:getColor()}} onClick={() => readBoard(boardOne.boardId)}>
                     <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
                 </div>
             )
