@@ -27,6 +27,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import AddIcon from '@mui/icons-material/Add';
 import { blue } from '@mui/material/colors';
 import { getOption } from '@/app/Common/option';
+import { Button } from '@mui/material';
 
 interface userData {
     userId: string,
@@ -183,9 +184,12 @@ export default function MyPage() {
         return (
             <Dialog onClose={handleClose} open={open}>
                 <DialogTitle>{selectedValue}</DialogTitle>
-
-                <input type="file" id="file" onChange={uploadToClient} />
-                <button onClick={uploadImgClient}>upload</button>
+                <div className="filebox" style={{ marginTop: '1rem' }}>
+                    <input className="upload-name" placeholder="첨부파일" />
+                    <label htmlFor="file">파일찾기</label>
+                    <input type="file" id="file" multiple onChange={uploadToClient} />
+                </div>
+                <Button onClick={uploadImgClient} style={{background:'black',fontWeight:'bold',marginTop:'0.5rem',color:'white'}}>upload</Button>
             </Dialog>
         );
     }
