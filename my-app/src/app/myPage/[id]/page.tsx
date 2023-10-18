@@ -15,6 +15,18 @@ import { MyList } from './MyList';
 import { FriendList } from './FriendList';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
+import Avatar from '@mui/material/Avatar';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from '@mui/material/Dialog';
+import PersonIcon from '@mui/icons-material/Person';
+import AddIcon from '@mui/icons-material/Add';
+import { blue } from '@mui/material/colors';
+import { getOption } from '@/app/Common/option';
 
 interface userData {
     userId: string,
@@ -23,12 +35,19 @@ interface userData {
     userName: string,
     userBirth: Date,
     imgUrl: string,
+    imgId : number
 }
 
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
     value: number;
+}
+
+export interface SimpleDialogProps {
+    open: boolean;
+    selectedValue: string;
+    onClose: (value: string) => void;
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -84,23 +103,23 @@ export default function MyPage() {
 
     const getMyData = () => {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getFriendOne/${id}`)
-        .then(res => res.json())
-        .then((res) => {
-            console.log(res);
-            if(res.status == 200) {
-                setUser(res.data[0])
-            }else{
-                alert('에러 발생');
-                window.history.go(-1);
+            .then(res => res.json())
+            .then((res) => {
+                console.log(res);
+                if (res.status == 200) {
+                    setUser(res.data[0])
+                } else {
+                    alert('에러 발생');
+                    window.history.go(-1);
+                }
+
             }
-            
-        }
-        );
+            );
     }
 
     const speedDialButton = () => {
-        if(value == 0) {
-            return(
+        if (value == 0) {
+            return (
                 <Box>
                     <SpeedDial
                         ariaLabel="SpeedDial basic example"
@@ -112,14 +131,14 @@ export default function MyPage() {
                     </SpeedDial>
                 </Box>
             )
-        }else if(value==1){
-            return(
+        } else if (value == 1) {
+            return (
                 <Box>
                     <SpeedDial
                         ariaLabel="SpeedDial basic example"
                         onClick={() => { router.push('/searchId') }}
                         sx={{ position: 'fixed', top: '80%', right: '16px', color: grey[900] }}
-                        icon={<SpeedDialIcon  sx={{ color: grey }} />}
+                        icon={<SpeedDialIcon sx={{ color: grey }} />}
                         style={{ color: 'black' }}
                     >
                     </SpeedDial>
@@ -131,32 +150,138 @@ export default function MyPage() {
     const logOut = () => {
         const ok = confirm("Are you sure you want to log out?");
 
-        if(ok){
-            
+        if (ok) {
+
             removeCookie('userData', { path: '/' });
             router.push('/');
         }
-        
+
     }
+
+    const [open, setOpen] = React.useState(false);
+    //   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (value: string) => {
+        setOpen(false);
+        // setSelectedValue(value);
+    };
+    function SimpleDialog(props: SimpleDialogProps) {
+        const { onClose, selectedValue, open } = props;
+
+        const handleClose = () => {
+            onClose(selectedValue);
+        };
+
+        const handleListItemClick = (value: string) => {
+            onClose(value);
+        };
+
+        return (
+            <Dialog onClose={handleClose} open={open}>
+                <DialogTitle>{selectedValue}</DialogTitle>
+
+                <input type="file" id="file" onChange={uploadToClient} />
+                <button onClick={uploadImgClient}>upload</button>
+            </Dialog>
+        );
+    }
+
+    const [image,setImage] = useState<any>();
+
+    const uploadToClient = (e: any) => {
+        if (e.target.files && e.target.files[0]) {
+            const img = e.target.files[0];
+            setImage(img);
+        }
+       
+    };
+
+    const uploadImgClient = async () => {
+     
+        const body = {
+          name:
+            "client/" + Math.random().toString(36).substring(2, 11) + image.name,
+          type: image.type,
+        };
+
+        const imgArr = new Array();
+
+        imgArr.push(body)
     
+        try {
+          const urlRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/media/client`, {
+            method: "POST",
+            body: JSON.stringify(imgArr),
+          });
+          const data = await urlRes.json();
+          const signedUrl = data.url;
+    
+          
+          
+          const uploadRes = await fetch(signedUrl[0], {
+            method: "PUT",
+            body: image,
+            headers: {
+              "Content-type": image.type,
+            },
+          });
+    
+          console.log(uploadRes);
+
+          profileImgUpload(uploadRes.url.split('?')[0]);
+        } catch (err) {
+          console.log(err);
+        }
+    };
+
+    const profileImgUpload = async (imgUrl:string) => {
+        try{
+            const body = {
+                exImgId : user?.imgId, 
+                newImgUrl:imgUrl,
+                userId:user?.id 
+            }
+
+            const option = getOption("POST",body)
+            const res:any = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/uploadImg`, option);
+            console.log(res);
+
+            if(res.status===200){
+                setOpen(false);
+                alert('등록 완료');
+                getMyData();
+            }else{
+                alert('에러 발생');
+                return;
+            }
+        }catch(err){
+            console.log(err);
+            alert('에러 발생');
+            return;
+        }
+    }
     return (
         <>
             <header className='card_myPage' style={{ height: '13rem', padding: '1rem', }}>
                 <div style={{ width: '7rem', height: '7rem', borderRadius: '70%', overflow: 'hidden', float: 'left' }}>
-                    <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={user?.imgUrl} />
+                    <img onClick={handleClickOpen} style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={user?.imgUrl} />
 
                 </div>
                 <div className='profile' style={{ float: 'left', marginLeft: '2rem', width: '10rem' }} >
-                    <h1>{user?.userName}</h1> 
+                    <h1>{user?.userName}</h1>
                     <span>{user?.userId}</span>
                 </div>
-                <div style={{float:'left',marginTop:'2rem'}}><LogoutIcon onClick={logOut}/></div>
+                <div style={{ float: 'left', marginTop: '2rem' }}><LogoutIcon onClick={logOut} /></div>
                 <div className='hamadi' style={{ display: 'inline-block', width: '100%', marginTop: '1.5rem' }}>
                     {user?.myIntro}
                 </div>
             </header>
 
-            <div className='Tab' style={{  height: '3rem',textAlign:'center',marginTop:'0.7rem' }}>
+            <div className='Tab' style={{ height: '3rem', textAlign: 'center', marginTop: '0.7rem' }}>
                 <Box sx={{ width: '100%' }}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example" centered variant="fullWidth" >
@@ -167,10 +292,10 @@ export default function MyPage() {
                     </Box>
 
                     <CustomTabPanel value={value} index={0}>
-                        <MyList/>
+                        <MyList />
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={1}>
-                        <FriendList/>
+                        <FriendList />
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
                         Item Three
@@ -194,6 +319,12 @@ export default function MyPage() {
                 </SpeedDial>
             </Box> */}
             {speedDialButton()}
+
+            <SimpleDialog
+                selectedValue={'User profile image upload'}
+                open={open}
+                onClose={handleClose}
+            />
         </>
     )
 }

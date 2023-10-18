@@ -5,7 +5,7 @@ export async function GET(request:NextRequest, context:{params:any}){
     const friendId = context.params.id;
 
     let qryStr = `
-        select a.id,a.userId,a.userName,a.userBirth,a.myIntro,b.imgUrl
+        select a.id,a.userId,a.userName,a.userBirth,a.myIntro,b.imgUrl,b.id as imgId
         from user a
         left join userImg b
         on a.id = b.userId

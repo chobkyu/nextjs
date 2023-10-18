@@ -4,7 +4,7 @@ import { getSignedFileUrl } from "../../board/s3url/s3";
 export async function POST(request:Request){
     console.log('-------------------- img upload ------------------------------');
     const body = await request.json();
-
+    console.log(body);
     try{
         const arr = [];
         for(var i = 0; i<body.length; i++){
