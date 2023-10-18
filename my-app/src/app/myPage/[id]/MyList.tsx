@@ -93,7 +93,7 @@ export function MyList() {
 
     const boardListComponent = () => {
         return (
-            <ImageList sx={{ width: '100%', height: '15rem' }} cols={3} rowHeight={164}>
+            <ImageList sx={{ width: '100%', height: 'auto' }} cols={3} rowHeight={164}>
                 {board.map((boardOne) => (
                     ImageListComponent(boardOne)
                 ))}

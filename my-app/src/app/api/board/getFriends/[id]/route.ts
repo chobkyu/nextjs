@@ -33,7 +33,7 @@ export async function GET(request:NextRequest,context:{params:any}) {
 
     try{
         const res = await queryPromise(qryStr);
-
+        console.log(res);
         return NextResponse.json({status:200, data:res});
     }catch(err){
         console.log(err);
