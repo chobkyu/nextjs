@@ -37,13 +37,14 @@ export default function ImgList() {
     return (
         <>
             {imgList.length>0 && loading? 
-            <ImageList sx={{ width: 300, height: 'auto' }} cols={1} rowHeight={500}>
+            <ImageList sx={{ width: '100%', height: 'auto' }} cols={1} rowHeight={'auto'}>
                 {imgList.map((item) => (
                     <ImageListItem key={item?.id}>
                         <img
                             srcSet={item?.imgUrl}
                             src={`${item.imgUrl}?w=164&h=164&fit=crop&auto=format`}
                             //   alt={item.title}
+                            style={{width:'100%',height:'auto'}}
                             loading="lazy"
                         />
                     </ImageListItem>
