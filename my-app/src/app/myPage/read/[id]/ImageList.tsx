@@ -44,6 +44,7 @@ export default function ImgList() {
                             srcSet={item?.imgUrl}
                             src={`${item.imgUrl}?w=164&h=164&fit=crop&auto=format`}
                             //   alt={item.title}
+                            style={{width:'100%',height:'auto'}}
                             loading="lazy"
                         />
                     </ImageListItem>
