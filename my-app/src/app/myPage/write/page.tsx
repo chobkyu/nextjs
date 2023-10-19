@@ -107,7 +107,7 @@ export default function Write() {
 
 
   const onchange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target);
+    //console.log(e.target);
     const { id, value } = e.target;
     setWrite({ ...write, [id]: value });
   }
@@ -122,6 +122,7 @@ export default function Write() {
       .then((res) => {
         if (res.status == 201) {
           alert('등록 완료');
+          setImgLoading(true);
           window.history.go(-1);
         } else {
           alert('에러가 발생했습니다');
@@ -136,6 +137,8 @@ export default function Write() {
 
   const [imageList, setImageList] = useState<any[]>([]);
   const [countImg, setCountImg] = useState<string>('첨부파일');
+  const [imgLoading, setImgLoading] = useState<boolean>(true);
+
   const urlArr: string[] =[];
   // 클라이언트에서 업로드 (aws-sdk getsignedurl 이용)
 
@@ -151,6 +154,10 @@ export default function Write() {
     if (e.target.files) {
       for (let i = 0; i < e.target.files.length; i++) {
         const img = e.target.files[i];
+        if(!img.type.match("image/.*")){
+          alert("이미지 파일만 업로드 가능합니다.")
+          return;
+        }
         imgArr.push(img);
       }
     }
@@ -167,6 +174,8 @@ export default function Write() {
 
   const uploadImgClient = async () => {
     // ...중략
+    setImgLoading(false);
+
     if (imageList === null) return;
     const imgListArr = new Array();
 
@@ -222,6 +231,11 @@ export default function Write() {
       console.log(err);
     }
   };
+
+  const noDoubleClick = () => {
+    imgLoading ? uploadImgClient() : alert('등록중입니다')
+  }
+
   return (
     <div style={{ marginLeft: '1rem', marginTop: '2rem' }}>
       <ThemeProvider theme={customTheme(outerTheme)}>
@@ -249,7 +263,7 @@ export default function Write() {
       </div>
 
       <div style={{ marginLeft: '13%', marginTop: '1rem' }}>
-        <Button variant="contained" onClick={uploadImgClient} style={{ background: '#3f3c3c', width: '7.5rem', fontWeight: 'bold' }} size='large'>Submit</Button>
+        <Button variant="contained" onClick={noDoubleClick} style={{ background: '#3f3c3c', width: '7.5rem', fontWeight: 'bold' }} size='large'>Submit</Button>
         <Button variant="contained" onClick={() => window.history.go(-1)} style={{ background: '#3f3c3c', width: '7.5rem', fontWeight: 'bold', marginLeft: '0.5rem' }} size='large'>Cancel</Button>
 
       </div>

@@ -15,20 +15,13 @@ import { MyList } from './MyList';
 import { FriendList } from './FriendList';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import LogoutIcon from '@mui/icons-material/Logout';
-import Avatar from '@mui/material/Avatar';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import PersonIcon from '@mui/icons-material/Person';
-import AddIcon from '@mui/icons-material/Add';
-import { blue } from '@mui/material/colors';
+import { Button, Input } from '@mui/material';
+import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
+import { styled } from '@mui/system';
 import { getOption } from '@/app/Common/option';
-import { Button } from '@mui/material';
-
+const ariaLabel = { 'aria-label': 'description' };
 interface userData {
     userId: string,
     myIntro: string,
@@ -94,6 +87,7 @@ export default function MyPage() {
 
     useEffect(() => {
         let userData = cookies.userData;
+        console.log(userData);
         if (!userData) {
             alert('로그인이 필요한 서비스입니다');
             router.push('/Sign/login');
@@ -152,7 +146,7 @@ export default function MyPage() {
         const ok = confirm("Are you sure you want to log out?");
 
         if (ok) {
-
+            setCookie('userData',null)
             removeCookie('userData', { path: '/' });
             router.push('/');
         }
@@ -189,14 +183,21 @@ export default function MyPage() {
                     <label htmlFor="file">파일찾기</label>
                     <input type="file" id="file" multiple onChange={uploadToClient} />
                 </div>
-                <Button onClick={uploadImgClient} style={{background:'black',fontWeight:'bold',marginTop:'0.5rem',color:'white'}}>upload</Button>
+                <Button onClick={noDoubleClick} style={{background:'black',fontWeight:'bold',marginTop:'0.5rem',color:'white'}}>upload</Button>
             </Dialog>
         );
     }
 
     const [image,setImage] = useState<any>();
+    const [imgLoading, setImgLoading] = useState<boolean>(true);
 
     const uploadToClient = (e: any) => {
+        console.log(e.target.files[0].type);
+        if (!e.target.files[0].type.match("image/.*")) {
+            alert('이미지 파일만 업로드가 가능합니다.');
+            return;
+          }
+
         if (e.target.files && e.target.files[0]) {
             const img = e.target.files[0];
             setImage(img);
@@ -205,7 +206,7 @@ export default function MyPage() {
     };
 
     const uploadImgClient = async () => {
-     
+        setImgLoading(false);
         const body = {
           name:
             "client/" + Math.random().toString(36).substring(2, 11) + image.name,
@@ -257,6 +258,7 @@ export default function MyPage() {
             if(res.status===200){
                 setOpen(false);
                 alert('등록 완료');
+                setImgLoading(true);
                 getMyData();
             }else{
                 alert('에러 발생');
@@ -268,6 +270,74 @@ export default function MyPage() {
             return;
         }
     }
+
+    const noDoubleClick = () => {
+        imgLoading ? uploadImgClient() : alert('업로드 중입니다');
+    }
+
+    const [openSelf, setOpenSelf] = React.useState(false);
+    //   const [selectedValue, setSelectedValue] = React.useState(emails[1]);
+
+    const handleClickOpenSelf = () => {
+        console.log('open')
+        setOpenSelf(true);
+    };
+
+    const handleCloseSelf = (value: string) => {
+        setOpenSelf(false);
+        // setSelectedValue(value);
+    };
+
+    
+
+    function SimpleDialogSelf(props: SimpleDialogProps) {
+        const { onClose, selectedValue, open } = props;
+
+        const [selfIntro, setSelfIntro] = useState<string>('');
+        const onchangeSelf = (e:React.ChangeEvent<HTMLInputElement>) => {
+            setSelfIntro(e.target.value);
+        }
+        const handleClose = () => {
+            onClose(selectedValue);
+        };
+
+        const handleListItemClick = (value: string) => {
+            onClose(value);
+        };
+
+        return (
+            <Dialog onClose={handleCloseSelf} open={open}>
+                <DialogTitle>{selectedValue}</DialogTitle>
+                <div style={{ marginTop: '1rem',maxHeight:'auto',textAlign:'center' }}>
+                    <Input placeholder="self introduction" style={{ marginTop: '1.5rem',}} multiline inputProps={ariaLabel} onChange={(e: any) => onchangeSelf(e)} />
+
+                </div>
+                <Button onClick={()=>updateSelfIntro(selfIntro)} style={{background:'black',fontWeight:'bold',marginTop:'0.5rem',color:'white'}}>upload</Button>
+            </Dialog>
+        );
+    }
+
+    const updateSelfIntro = (selfIntro:string) => {
+        console.log(selfIntro)
+
+        const obj = { id , selfIntro };
+        const option = getOption('POST',obj);
+
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/updateSelf`,option)
+            .then((res)=>res.json())
+            .then((res) => {
+                if(res.success) {
+                    alert('등록 완료')
+                    setOpenSelf(false);
+                    getMyData();
+                }else{
+                    alert('에러 발생');
+                    setOpenSelf(false);
+
+                }
+            })
+    }
+
     return (
         <>
             <header className='card_myPage' style={{ height: '13rem', padding: '1rem', }}>
@@ -280,8 +350,8 @@ export default function MyPage() {
                     <span>{user?.userId}</span>
                 </div>
                 <div style={{ float: 'left', marginTop: '2rem' }}><LogoutIcon onClick={logOut} /></div>
-                <div className='hamadi' style={{ display: 'inline-block', width: '100%', marginTop: '1.5rem' }}>
-                    {user?.myIntro}
+                <div className='hamadi' onClick = {handleClickOpenSelf} style={{ display: 'inline-block', width: '100%', marginTop: '1.5rem',marginLeft:'0.5rem' }}>
+                    {user?.myIntro == '' ? 'If you want to write a self-introduction, Click it!' : user?.myIntro}
                 </div>
             </header>
 
@@ -328,6 +398,12 @@ export default function MyPage() {
                 selectedValue={'User profile image upload'}
                 open={open}
                 onClose={handleClose}
+            />
+
+            <SimpleDialogSelf
+                selectedValue={'Write a self introduction'}
+                open={openSelf}
+                onClose={handleCloseSelf}
             />
         </>
     )
