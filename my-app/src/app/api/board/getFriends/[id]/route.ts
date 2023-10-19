@@ -2,6 +2,7 @@ import { queryPromise } from "@/app/api/config/queryFunc";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request:NextRequest,context:{params:any}) {
+    console.log('get friend list');
     const userId = context.params.id;
 
     let qryStr = `

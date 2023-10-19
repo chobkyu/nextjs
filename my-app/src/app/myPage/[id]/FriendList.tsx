@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -37,6 +37,7 @@ export function FriendList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
     const [friendList, setFriendList] = useState<friendList[]>([]);
     const router = useRouter();
+    const { id } = useParams();
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -46,7 +47,7 @@ export function FriendList() {
     const getList = async () => {
         const userId = cookies.userData.id;
 
-        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getFriends/${userId}`,{ cache: 'no-cache' })
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getFriends/${id}`,{ cache: 'no-cache' })
             .then(res => res.json())
             .then(res => {
                 console.log(res);

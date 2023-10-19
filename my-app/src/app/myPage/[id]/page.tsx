@@ -189,14 +189,21 @@ export default function MyPage() {
                     <label htmlFor="file">파일찾기</label>
                     <input type="file" id="file" multiple onChange={uploadToClient} />
                 </div>
-                <Button onClick={uploadImgClient} style={{background:'black',fontWeight:'bold',marginTop:'0.5rem',color:'white'}}>upload</Button>
+                <Button onClick={noDoubleClick} style={{background:'black',fontWeight:'bold',marginTop:'0.5rem',color:'white'}}>upload</Button>
             </Dialog>
         );
     }
 
     const [image,setImage] = useState<any>();
+    const [imgLoading, setImgLoading] = useState<boolean>(true);
 
     const uploadToClient = (e: any) => {
+        console.log(e.target.files[0].type);
+        if (!e.target.files[0].type.match("image/.*")) {
+            alert('이미지 파일만 업로드가 가능합니다.');
+            return;
+          }
+
         if (e.target.files && e.target.files[0]) {
             const img = e.target.files[0];
             setImage(img);
@@ -205,7 +212,7 @@ export default function MyPage() {
     };
 
     const uploadImgClient = async () => {
-     
+        setImgLoading(false);
         const body = {
           name:
             "client/" + Math.random().toString(36).substring(2, 11) + image.name,
@@ -257,6 +264,7 @@ export default function MyPage() {
             if(res.status===200){
                 setOpen(false);
                 alert('등록 완료');
+                setImgLoading(true);
                 getMyData();
             }else{
                 alert('에러 발생');
@@ -267,6 +275,10 @@ export default function MyPage() {
             alert('에러 발생');
             return;
         }
+    }
+
+    const noDoubleClick = () => {
+        imgLoading ? uploadImgClient() : alert('업로드 중입니다');
     }
     return (
         <>
