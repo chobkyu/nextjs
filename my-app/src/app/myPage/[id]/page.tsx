@@ -94,6 +94,7 @@ export default function MyPage() {
 
     useEffect(() => {
         let userData = cookies.userData;
+        console.log(userData);
         if (!userData) {
             alert('로그인이 필요한 서비스입니다');
             router.push('/Sign/login');
@@ -152,7 +153,7 @@ export default function MyPage() {
         const ok = confirm("Are you sure you want to log out?");
 
         if (ok) {
-
+            setCookie('userData',null)
             removeCookie('userData', { path: '/' });
             router.push('/');
         }

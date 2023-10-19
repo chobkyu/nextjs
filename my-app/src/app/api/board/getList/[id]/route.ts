@@ -26,6 +26,7 @@ export async function GET(request:NextRequest,context:{params: any}) {
         on a.id = b.userId
         where a.id = ${userId}
         and b.isDeleted = false
+        order by boardId desc
     `;
 
     try{
