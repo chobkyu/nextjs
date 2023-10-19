@@ -84,7 +84,7 @@ export function MyList() {
                 </ImageListItem>)
         } else {
             return (
-                <div style={{ display: 'inline-block', height: '10.25rem', background:getColor()}} onClick={() => readBoard(boardOne.boardId)}>
+                <div style={{ display: 'inline-block', height: '10.25rem',width:'6.5rem', background:getColor()}} onClick={() => readBoard(boardOne.boardId)}>
                     <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
                 </div>
             )
