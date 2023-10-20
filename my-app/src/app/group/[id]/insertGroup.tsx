@@ -98,14 +98,14 @@ export default function InsertGroup(){
     };
 
     const noDoubleClick = () => {
-            imgLoading ? uploadImgClient() : alert('업로드 중입니다');
+        imgLoading ? uploadImgClient() : alert('업로드 중입니다');
     }
 
 
     const insertGroupData = async (imgUrl:string) => {
-        const userId = cookies.userData.id;
-        setSaveGroup({...saveGroup,imgUrl:imgUrl,userId:id});
         console.log(id)
+
+        setSaveGroup({...saveGroup,imgUrl:imgUrl,userId:id});
         console.log(saveGroup)
         if(saveGroup.name==''||saveGroup.introduction==''){
             alert('모든 사항을 입력해주세요');

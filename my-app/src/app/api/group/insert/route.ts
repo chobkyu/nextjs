@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(request:Request){
     const body = await request.json();
     console.log(body)
-    const { name, introduction, groupImg, userId } = body;
+    const { name, introduction, imgUrl, userId } = body;
 
     const mysql = require('mysql2/promise');
     const pool = await mysql.createPool({
@@ -22,7 +22,7 @@ export async function POST(request:Request){
         await connection.beginTransaction();
 
         const insertGroup = `insert into groupName(name,introduction, groupImg)
-                            values ('${name}','${introduction}','${groupImg}')`;
+                            values ('${name}','${introduction}','${imgUrl}')`;
 
         const res = await connection.query(insertGroup);
         
