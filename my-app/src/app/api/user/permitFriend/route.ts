@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { queryPromise } from "../../config/queryFunc";
+const connection = require('../../config/db');
 
 export async function GET(request:NextRequest){
     const mysql = require('mysql2/promise');
@@ -52,7 +53,7 @@ const checkFriend = async (userId:any, friendId:any) => {
     try{
         let qryStr = `select * from friends where userId = ${userId} and friendId = ${friendId}`
 
-        const res:any = await queryPromise(qryStr);
+        const res:any = await connection.query(qryStr);
 
         if(res.length>0) return {success:false};
         else return {success:true};

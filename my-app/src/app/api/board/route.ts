@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { queryPromise } from "../config/queryFunc";
+const connection = require('../config/db');
 
 interface writeData {
     userId : number,
@@ -27,7 +28,7 @@ export async function POST(request : Request) {
     `
     
     try{
-        const res : any = await queryPromise(queryString);
+        const res : any = await connection.query(queryString);
 
         console.log(res['insertId']);
 

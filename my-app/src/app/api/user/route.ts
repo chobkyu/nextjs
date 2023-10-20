@@ -10,16 +10,6 @@ interface userData {
     userName:string
 }
 
-function queryPromise(queryString:string) {
-    return new Promise((resolve, reject) => {  
-		connection.query(queryString, (error:any, results:any) => {  
-			if (error) {  
-				return reject(error);  
-			}  
-			resolve(results);  
-		});  
-	});  
-}
 
 //login
 export async function POST(request: Request) {
@@ -33,7 +23,7 @@ export async function POST(request: Request) {
     let queryString = `select * from user where userId = '${userId}' and userPw = '${password}'`;
 
     try{
-        const row : userData | any = await queryPromise(queryString);
+        const row : userData | any = await connection.query(queryString);
         if(row){
             const { userPw, ...result } = row[0]; 
             return NextResponse.json({status:201,success:true,data:result});

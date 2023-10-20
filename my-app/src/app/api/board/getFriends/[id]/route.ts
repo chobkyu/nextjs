@@ -1,5 +1,5 @@
-import { queryPromise } from "@/app/api/config/queryFunc";
 import { NextRequest, NextResponse } from "next/server";
+const connection = require('../../../config/db');
 
 export async function GET(request:NextRequest,context:{params:any}) {
     console.log('get friend list');
@@ -33,7 +33,7 @@ export async function GET(request:NextRequest,context:{params:any}) {
     `;
 
     try{
-        const res = await queryPromise(qryStr);
+        const res = await connection.query(qryStr);
         console.log(res);
         return NextResponse.json({status:200, data:res});
     }catch(err){

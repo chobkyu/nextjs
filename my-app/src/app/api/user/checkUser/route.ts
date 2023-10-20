@@ -1,6 +1,6 @@
 import { NextRequestWithAuth } from "next-auth/middleware";
 import { NextRequest, NextResponse } from "next/server";
-import { queryPromise } from "../../config/queryFunc";
+const connection = require('../../config/db');
 
 export async function GET(request:NextRequest){
     const qryString = request.nextUrl.searchParams;
@@ -19,7 +19,7 @@ export async function GET(request:NextRequest){
     `;
 
     try{
-        const res :any = await queryPromise(queryString);
+        const res :any = await connection.query(queryString);
         let success;
 
         if(res.length>0) {

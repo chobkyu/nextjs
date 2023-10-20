@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-const connection = require('../../config/db');
 
-export async function POST(request:Request) {
+export async function POST(request:Request){
     const body = await request.json();
-    console.log(body);
-    const { exImgId, newImgUrl,userId } = body;
+    console.log(body)
+    const { name, introduction, imgUrl, userId } = body;
 
     const mysql = require('mysql2/promise');
     const pool = await mysql.createPool({
@@ -17,26 +16,31 @@ export async function POST(request:Request) {
     });
 
     const connection = await pool.getConnection();
-
+    
     try{
+      
         await connection.beginTransaction();
 
-        const updateExImg = `update userImg set useFlag=false where id=${exImgId}`;
-        const insertNewImg = `insert into userImg(imgUrl,useFlag,userId) values ('${newImgUrl}',true,${userId})`;
+        const insertGroup = `insert into groupName(name,introduction, groupImg)
+                            values ('${name}','${introduction}','${imgUrl}')`;
 
-        await connection.query(updateExImg);
-        await connection.query(insertNewImg);
+        const res = await connection.query(insertGroup);
+        
+        const groupId = res[0].insertId;
+        
+        const insertFisrtMem = `insert into groupMem(follow, userId, groupId)
+                               values (true,${userId},${groupId})`;
 
+        await connection.query(insertFisrtMem);
         await connection.commit();
 
         return NextResponse.json({status:201,success:true});
-
+        
     }catch(err){
         console.log(err);
         await connection.rollback();
-        return NextResponse.json({err,success:false})
+        return NextResponse.json({err});
     }finally{
         connection.release();
     }
 }
-

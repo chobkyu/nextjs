@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryPromise } from "../../../config/queryFunc";
-import { NextApiRequest } from "next";
+const connection = require('../../../config/db');
 
 interface getListDto{
     userId:number;
@@ -30,7 +29,7 @@ export async function GET(request:NextRequest,context:{params: any}) {
     `;
 
     try{
-        const res = await queryPromise(queryString);
+        const res = await connection.query(queryString);
 
         return NextResponse.json({status:201, datas: res});
     }catch(err){

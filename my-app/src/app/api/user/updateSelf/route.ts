@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { queryPromise } from "../../config/queryFunc";
+const connection = require('../../config/db');
 
 export async function POST (request:Request) {
     const body = await request.json();
@@ -10,7 +11,7 @@ export async function POST (request:Request) {
         update user set myIntro = '${selfIntro}' where id = ${id}
     `;
     try{
-        await queryPromise(qryStr);
+        await connection.query(qryStr);
 
         return NextResponse.json({status:201, success:true});
     }catch(err){

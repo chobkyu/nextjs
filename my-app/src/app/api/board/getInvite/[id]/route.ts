@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { queryPromise } from "../../../config/queryFunc";
+
+const connection = require('../../../config/db');
 
 
 export async function GET(request:Request,context:{params:any}){
@@ -29,7 +30,7 @@ export async function GET(request:Request,context:{params:any}){
     `;
 
     try{
-        const res :any= await queryPromise(qryStr);
+        const res :any= await connection.query(qryStr);
 
         if(res.length==0) return NextResponse.json({status:200,success:false,msg:'요청이 없습니다'})
 

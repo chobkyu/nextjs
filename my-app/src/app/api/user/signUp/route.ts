@@ -1,5 +1,6 @@
 import { NextResponse , NextRequest} from 'next/server'
 import { queryPromise } from '../../config/queryFunc';
+const connection = require('../../config/db');
 
 
 export async function POST(request:Request){
@@ -24,7 +25,7 @@ export async function POST(request:Request){
 
     
     try{
-        const res : any = await queryPromise(queryString);
+        const res : any = await connection.query(queryString);
 
         const { userPw, ...result } = body
 
@@ -45,7 +46,7 @@ const insertDefaultImg = async (userId:any) => {
     let queryString = `insert into userImg ( imgUrl, useFlag, userId ) values ('${defaultImg}',true,${userId})`;
 
     try{
-        const res = await queryPromise(queryString);
+        const res = await connection.query(queryString);
 
         return NextResponse.json({success:true});
     }catch(err){
@@ -60,7 +61,7 @@ const checkUser = async (userId:string, userPw:string) => {
 
     try{
         let row: string | any | unknown[]  = [];
-        row = await queryPromise(queryString);
+        row = await connection.query(queryString);
         console.log(row);
         
         if(row.length>0){
