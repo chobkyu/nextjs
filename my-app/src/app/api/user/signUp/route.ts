@@ -1,5 +1,6 @@
 import { NextResponse , NextRequest} from 'next/server'
 import { queryPromise } from '../../config/queryFunc';
+const connection = require('../../config/db');
 
 
 export async function POST(request:Request){
