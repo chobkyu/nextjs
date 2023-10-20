@@ -139,6 +139,19 @@ export default function MyPage() {
                     </SpeedDial>
                 </Box>
             );
+        } else if (value == 2) {
+            return (
+                <Box>
+                    <SpeedDial
+                        ariaLabel="SpeedDial basic example"
+                        onClick={() => { router.push(`/group/${id}`) }}
+                        sx={{ position: 'fixed', top: '80%', right: '16px', color: grey[900] }}
+                        icon={<SpeedDialIcon sx={{ color: grey }} />}
+                        style={{ color: 'black' }}
+                    >
+                    </SpeedDial>
+                </Box>
+            );
         }
     }
 
