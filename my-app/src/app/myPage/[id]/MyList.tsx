@@ -5,8 +5,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import { useParams, useRouter } from "next/navigation";
-
+import { useParams, useRouter, usePathname } from "next/navigation";
 
 interface board {
     user: number,
@@ -44,6 +43,7 @@ export function MyList() {
     const [board, setBoard] = useState<board[]>([]);
     const router = useRouter();
     const { id } = useParams();
+    const pathname = usePathname();
 
     const getList = async () => {
         const userId = cookies.userData.id;
@@ -71,7 +71,7 @@ export function MyList() {
         return colorArr[idx];
     }
     const ImageListComponent = (boardOne: board) => {
-
+        
         if (boardOne.thumbnail != null) {
             return (
                 <ImageListItem key={boardOne.thumbnail} onClick={() => readBoard(boardOne.boardId)}>
@@ -83,12 +83,25 @@ export function MyList() {
                     />
                 </ImageListItem>)
         } else {
+            const width = getWidth();
             return (
-                <div style={{ display: 'inline-block', height: '10.25rem',width:'6.5rem', background:getColor()}} onClick={() => readBoard(boardOne.boardId)}>
+                <div style={{ display: 'inline-block', height: '10.25rem',width:`${width}`, background:getColor()}} onClick={() => readBoard(boardOne.boardId)}>
                     <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
                 </div>
             )
         }
+    }
+
+    const getWidth = () => {
+        console.log(pathname.split('/',2)[1]);  
+        const path = pathname.split('/',2)[1];
+
+        if(path==='myPage') {
+            return '6.6rem';
+        }else{
+            return '7.6rem';
+        }
+
     }
 
     const boardListComponent = () => {
