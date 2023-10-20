@@ -1,6 +1,7 @@
 import { queryPromise } from "@/app/api/config/queryFunc";
 import { NextRequestWithAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+const connection = require('../../../config/db');
 
 interface getOne {
     user : number,
@@ -41,7 +42,7 @@ export async function GET(request:NextRequestWithAuth, context:{params:any}){
     `;
 
     try{
-        const res : getOne[] | any= await queryPromise(queryString);
+        const res : getOne[] | any= await connection.query(queryString);
 
         console.log(res);
         

@@ -1,5 +1,5 @@
 import { NextResponse , NextRequest} from 'next/server'
-import { queryPromise } from '../../config/queryFunc';
+const connection = require('../../config/db');
 
 export async function POST(request:Request) {
     const body = await request.json();
@@ -17,7 +17,7 @@ export async function POST(request:Request) {
     if(!check.success) return NextResponse.json({status:201,success:false,msg:'이미 신청한 친구입니다'});
 
     try{
-        await queryPromise(qryStr);
+        await connection.query(qryStr);
 
         return NextResponse.json({status:201,success:true});
         
@@ -31,7 +31,7 @@ const checkAdd = async (userId:number, friendId:number) => {
     try{
         let qryStr = `select * from invite where fromId = ${userId} and toId = ${friendId}`
 
-        const res:any = await queryPromise(qryStr);
+        const res:any = await connection.query(qryStr);
 
         console.log(res.length);
 

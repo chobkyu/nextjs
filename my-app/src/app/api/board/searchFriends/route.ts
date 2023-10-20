@@ -1,5 +1,6 @@
 import { queryPromise } from "@/app/api/config/queryFunc";
 import { NextRequest, NextResponse } from "next/server";
+const connection = require('../../config/db');
 
 export async function GET(request:NextRequest){
     const urlQry = request.nextUrl.searchParams;
@@ -33,7 +34,7 @@ export async function GET(request:NextRequest){
     `;
 
     try {
-        const res = await queryPromise(qryStr);
+        const res = await connection.query(qryStr);
 
         console.log(res);
 
