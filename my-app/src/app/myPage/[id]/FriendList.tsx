@@ -89,7 +89,7 @@ export function FriendList() {
                     {/* <div className='profile' style={{ float: 'left', marginLeft: '1rem', marginTop: '0.5rem', width: '10rem', padding: '0.01rem' }} >
 
 
-                </div> */}
+                </div>  */}
                 </div>
                 <Divider style={{ marginTop: '1.2rem', width: '100%' }} />
             </>
