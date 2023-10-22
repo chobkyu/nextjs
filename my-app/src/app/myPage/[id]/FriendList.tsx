@@ -103,7 +103,6 @@ export function FriendList() {
             {friendList.map((friend) => (
                 frinedListComponent(friend)
             ))}
-
             
         </div>
     );
