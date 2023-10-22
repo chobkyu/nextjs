@@ -4,8 +4,12 @@ const connection = require("../../../config/db");
 export async function GET(request:NextRequest, context:{params:any}){
     const userId = context.params.id;
 
-    let qryStr = `
-        select *
+    let qryStr = `  
+        select 
+            groupId,
+            name,
+            introduction, 
+            groupImg
         from groupName a
         join groupMem b
         on a.id = b.groupId
@@ -15,7 +19,7 @@ export async function GET(request:NextRequest, context:{params:any}){
     try{
         const res = await connection.query(qryStr);
 
-        return NextResponse.json({status:200, data:res});
+        return NextResponse.json({status:200, success:true, data:res});
 
     }catch(err){
         console.log(err);

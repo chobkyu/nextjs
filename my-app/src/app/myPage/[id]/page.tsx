@@ -21,6 +21,7 @@ import { Button, Input } from '@mui/material';
 import { TextareaAutosize as BaseTextareaAutosize } from '@mui/base/TextareaAutosize';
 import { styled } from '@mui/system';
 import { getOption } from '@/app/Common/option';
+import { GroupList} from './GroupList';
 const ariaLabel = { 'aria-label': 'description' };
 interface userData {
     userId: string,
@@ -385,7 +386,7 @@ export default function MyPage() {
                         <FriendList />
                     </CustomTabPanel>
                     <CustomTabPanel value={value} index={2}>
-                        Item Three
+                        <GroupList/>
                     </CustomTabPanel>
                 </Box>
             </div>
