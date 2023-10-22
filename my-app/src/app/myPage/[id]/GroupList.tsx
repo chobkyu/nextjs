@@ -44,7 +44,7 @@ export function GroupList(){
 
     const groupListComponent = (group:group) => {
         return (
-            <>{group.name}</>
+            <>{group.name}</> 
         )
     }
     
