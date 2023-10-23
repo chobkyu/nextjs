@@ -40,7 +40,7 @@ export async function GET(request:NextRequest){
     }
 }
 
-export async function checkUser(id:number, group:number) {
+async function checkUser(id:number, group:number) {
     const userId = id;
     const groupId = group
     const qryStr = `
