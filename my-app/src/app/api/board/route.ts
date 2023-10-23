@@ -13,7 +13,7 @@ export async function POST(request : Request) {
     const body = await request.json();
 
     const write = body.write;
-    const imgList = body.urlArr
+    const imgList = body.urlArr;
 
     console.log(imgList);
     const setWriteData :writeData = { ...write };
