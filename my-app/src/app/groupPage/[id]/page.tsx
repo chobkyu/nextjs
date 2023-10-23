@@ -1,8 +1,11 @@
 "use client"
 import { MyList } from "@/app/myPage/[id]/MyList";
+import { Box, SpeedDial } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie"
+import { grey } from '@mui/material/colors';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface groupDto {
     id: number,
@@ -37,8 +40,25 @@ export default function GroupPage() {
         getGroupPage();
     }, []);
 
-    const moveToGroupPage = (id:number) => {
+    const moveToGroupPage = (id: number) => {
         //router.push(`/group/${}`)
+    }
+
+    const speedDialButton = () => {
+
+        return (
+            <Box>
+                <SpeedDial
+                    ariaLabel="SpeedDial basic example"
+                    onClick={() => { router.push('/myPage/write') }}
+                    sx={{ position: 'fixed', top: '80%', right: '16px', color: grey[900] }}
+                    icon={<EditIcon fontSize='small' sx={{ color: grey }} />}
+                    style={{ color: 'black' }}
+                >
+                </SpeedDial>
+            </Box>
+        )
+
     }
 
     return (
@@ -60,6 +80,9 @@ export default function GroupPage() {
             <div className='Tab' style={{ height: 'auto', textAlign: 'center', marginTop: '0.7rem' }}>
                 <MyList />
             </div>
+
+            {speedDialButton()}
+
         </div>
     )
 }
