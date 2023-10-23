@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const connection = require('../../config/db');
 //그룹 게시글 리스트
 export async function GET(request:NextRequest){
     const qryString = request.nextUrl.searchParams;
@@ -12,50 +13,54 @@ export async function GET(request:NextRequest){
     }
 
     const check = await checkUser(parseInt(userId),parseInt(groupId))
+    if(!check.success) {
+        console.log(check.success)
 
-    if(!check.success) return {status:500, msg:check.msg};
+        return {status:500, msg:check.msg};
+    }
 
     const qryStr = `
         select 
-        a.id as groupBoardId,
-        title,
-        contents,
-        dateTime,
-        thumbnail,
-        b.id as groupId
+            a.id as groupBoardId,
+            title,
+            contents,
+            dateTime,
+            thumbnail,
+            b.id as groupId
         from next.groupName a
         join next.groupBoard b
         on a.id = b.groupId
-        where b.id = ${groupId}
+        where groupId = ${groupId}
         and isDeleted = false;
     `;
 
     try{
         const res = await connection.query(qryStr);
-
-        return res;
+        console.log(res);
+        return NextResponse.json({status:200,success:true,data:res})
     }catch(err){
         console.log(err);
         return NextResponse.json(err);
     }
 }
 
+
 async function checkUser(id:number, group:number) {
     const userId = id;
     const groupId = group
     const qryStr = `
-        select id
+        select 
+            id
         from groupMem
         where
-        userId = ${id}
+        userId = ${userId}
         and 
-        groupId = ${group}
-        and follow true
+        groupId = ${groupId}
+        and follow = true
     `
 
     try{
         const res = await connection.query(qryStr);
-
         if(res.length>0){
             return {success:true};
         }else{
@@ -67,3 +72,4 @@ async function checkUser(id:number, group:number) {
         return {success:false};
     }
 }
+

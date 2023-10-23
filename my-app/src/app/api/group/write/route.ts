@@ -1,48 +1,49 @@
 import { NextResponse } from "next/server";
-import { queryPromise } from "../config/queryFunc";
-const connection = require('../config/db');
 
-interface writeData {
+interface writeData{
     userId : number,
+    groupId : string,
     title : string,
-    contents: string,
-    // imgUrl? : string,
+    contents : string,
 }
 
-export async function POST(request : Request) {
+const connection = require('../../config/db');
+
+export async function POST(request:Request){
     const body = await request.json();
 
     const write = body.write;
     const imgList = body.urlArr;
 
-    console.log(imgList);
+    console.log(body)
+
     const setWriteData :writeData = { ...write };
     const thumbnail = imgList.length > 0 ? `'${imgList[0]}'` : null;
-    //const date = new Date();
-    let queryString = `
-        insert into myBoard(
-            title,contents,isDeleted,isModified,dateTime,userId,thumbnail
-        ) values (
-            '${setWriteData.title}','${setWriteData.contents}',false,false,'${new Date()}',${setWriteData.userId},${thumbnail}
-        );
-    `
-    
-    try{
-        const res : any = await connection.query(queryString);
 
-        console.log(res['insertId']);
+    let qryStr = `
+        insert into next.groupBoard (
+            title,contents,isDeleted,isModified,dateTime,userId,thumbnail,groupId)
+        values (
+            '${setWriteData.title}','${setWriteData.contents}',false,false,'${new Date()}',${setWriteData.userId},${thumbnail},${parseInt(setWriteData.groupId)}
+        )
+    `;
+
+    //유저 체크
+
+    try{
+        const res : any = await connection.query(qryStr);
 
         await uploadImgUrl(res['insertId'],imgList);
-
+        
         return NextResponse.json({status:201,success:true});
-    } catch(err) {
+
+    }catch(err){
         console.log(err);
         return NextResponse.json({err});
     }
 }
 
-
-/**이미지 업로드 작성 */
+//이미지 작성 함수
 async function uploadImgUrl(id : number, urlArr:Array<string>) {
     const mysql = require('mysql2/promise');
     const pool = await mysql.createPool({
@@ -58,7 +59,7 @@ async function uploadImgUrl(id : number, urlArr:Array<string>) {
     try{
         await connection.beginTransaction()
         urlArr.forEach( async (url)=>{
-            const qryStr =  `insert into myBoardImg (imgUrl, boardId) values ('${url}',${id})`;
+            const qryStr =  `insert into groupBoardImg (imgUrl, groupBoarddId) values ('${url}',${id})`;
             await connection.query(qryStr);
         });
 

@@ -19,6 +19,14 @@ interface board {
     thumbnail: string,
 }
 
+interface group{
+    groupBoardId : number,
+    title : string,
+    contents : string,
+    dateTime : Date,
+    thumbnail : string
+}
+
 const colorArr = [
     '#9044f4',
     '$81F712',
@@ -41,6 +49,7 @@ const colorArr = [
 export function MyList() {
     const [cookies, setCookie, removeCookie] = useCookies(['userData']);
     const [board, setBoard] = useState<board[]>([]);
+    const [group,setGroup] = useState<group[]>([]);
     const router = useRouter();
     const { id } = useParams();
     const pathname = usePathname();
@@ -57,8 +66,25 @@ export function MyList() {
             })
     }
 
+    const getGroupList = async () => {
+        const userId = cookies.userData.id;
+
+        fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/read?userId=${userId}&groupId=${id}`)
+            .then(res => res.json())
+            .then(res => {
+                console.log(res);
+                setGroup(res.data);
+            })    
+    }
+
     useEffect(() => {
-        getList();
+        const path = pathname.split('/',2)[1];
+
+        if(path==='groupPage'){
+            getGroupList();
+        }else{
+            getList();
+        }
     }, []);
 
     const readBoard = (id: number) => {
@@ -92,6 +118,28 @@ export function MyList() {
         }
     }
 
+    const ImageGroupListComponent = (boardOne: group) => {
+        
+        if (boardOne.thumbnail != null) {
+            return (
+                <ImageListItem key={boardOne.thumbnail} onClick={() => readBoard(boardOne.groupBoardId)}>
+                    <img
+                        srcSet={`${boardOne.thumbnail}`}
+                        src={`${boardOne.thumbnail}`}
+                        alt={boardOne.title}
+                        loading="lazy"
+                    />
+                </ImageListItem>)
+        } else {
+            const width = getWidth();
+            return (
+                <div style={{ display: 'inline-block', height: '10.25rem',width:`${width}`, background:getColor()}} onClick={() => readBoard(boardOne.groupBoardId)}>
+                    <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
+                </div>
+            )
+        }
+    }
+
     const getWidth = () => {
         console.log(pathname.split('/',2)[1]);  
         const path = pathname.split('/',2)[1];
@@ -105,18 +153,43 @@ export function MyList() {
     }
 
     const boardListComponent = () => {
-        return (
-            <ImageList sx={{ width: '100%', height: 'auto' }} cols={3} rowHeight={164}>
-                {board.map((boardOne) => (
-                    ImageListComponent(boardOne)
-                ))}
-            </ImageList>)
+        const path = pathname.split('/',2)[1];
+        console.log(path);
+        if(path==='groupPage'){
+            return (
+                <ImageList sx={{ width: '100%', height: 'auto' }} cols={3} rowHeight={164}>
+                    {group.map((boardOne) => (
+                        ImageGroupListComponent(boardOne)
+                    ))}
+                </ImageList>)
+    
+        }else{
+            return (
+                <ImageList sx={{ width: '100%', height: 'auto' }} cols={3} rowHeight={164}>
+                    {board.map((boardOne) => (
+                        ImageListComponent(boardOne)
+                    ))}
+                </ImageList>)
+    
+        }
 
+    }
+
+    const renderList = () => {
+        console.log(group?.length)
+        if(group?.length>0){
+            console.log('?');
+            boardListComponent();
+        } else{
+            return <h3>아직 게시된 게시물이 없습니다</h3>   
+
+        }
     }
 
     return (
         <>
-            {board?.length > 0 ? boardListComponent() : <h3>아직 게시된 게시물이 없습니다</h3>}
+            {board?.length > 0 || group?.length>0? boardListComponent() : <h3>아직 게시된 게시물이 없습니다</h3>}
+
         </>
     )
 
