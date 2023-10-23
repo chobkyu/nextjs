@@ -30,7 +30,7 @@ export async function GET(request:NextRequest){
         from next.groupName a
         join next.groupBoard b
         on a.id = b.groupId
-        where b.id = ${groupId}
+        where groupId = ${groupId}
         and isDeleted = false;
     `;
 

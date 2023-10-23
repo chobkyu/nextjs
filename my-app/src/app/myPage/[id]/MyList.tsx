@@ -66,14 +66,14 @@ export function MyList() {
             })
     }
 
-    const getGroupList =async () => {
+    const getGroupList = async () => {
         const userId = cookies.userData.id;
 
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/read?userId=${userId}&groupId=${id}`)
             .then(res => res.json())
             .then(res => {
                 console.log(res);
-                setBoard(res.datas);
+                setGroup(res.data);
             })    
     }
 
@@ -154,7 +154,7 @@ export function MyList() {
 
     const boardListComponent = () => {
         const path = pathname.split('/',2)[1];
-
+        console.log(path);
         if(path==='groupPage'){
             return (
                 <ImageList sx={{ width: '100%', height: 'auto' }} cols={3} rowHeight={164}>
@@ -175,9 +175,21 @@ export function MyList() {
 
     }
 
+    const renderList = () => {
+        console.log(group?.length)
+        if(group?.length>0){
+            console.log('?');
+            boardListComponent();
+        } else{
+            return <h3>아직 게시된 게시물이 없습니다</h3>   
+
+        }
+    }
+
     return (
         <>
-            {board?.length > 0 ? boardListComponent() : <h3>아직 게시된 게시물이 없습니다</h3>}
+            {board?.length > 0 || group?.length>0? boardListComponent() : <h3>아직 게시된 게시물이 없습니다</h3>}
+
         </>
     )
 
