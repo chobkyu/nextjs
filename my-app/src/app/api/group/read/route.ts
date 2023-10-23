@@ -1,4 +1,3 @@
-import { checkUser } from "@/app/Common/checkGroupMem";
 import { NextRequest, NextResponse } from "next/server";
 
 const connection = require('../../config/db');
@@ -14,17 +13,20 @@ export async function GET(request:NextRequest){
     }
 
     const check = await checkUser(parseInt(userId),parseInt(groupId))
+    if(!check.success) {
+        console.log(check.success)
 
-    if(!check.success) return {status:500, msg:check.msg};
+        return {status:500, msg:check.msg};
+    }
 
     const qryStr = `
         select 
-        a.id as groupBoardId,
-        title,
-        contents,
-        dateTime,
-        thumbnail,
-        b.id as groupId
+            a.id as groupBoardId,
+            title,
+            contents,
+            dateTime,
+            thumbnail,
+            b.id as groupId
         from next.groupName a
         join next.groupBoard b
         on a.id = b.groupId
@@ -34,11 +36,40 @@ export async function GET(request:NextRequest){
 
     try{
         const res = await connection.query(qryStr);
-
-        return res;
+        console.log(res);
+        return NextResponse.json({status:200,success:true,data:res})
     }catch(err){
         console.log(err);
         return NextResponse.json(err);
+    }
+}
+
+
+async function checkUser(id:number, group:number) {
+    const userId = id;
+    const groupId = group
+    const qryStr = `
+        select 
+            id
+        from groupMem
+        where
+        userId = ${userId}
+        and 
+        groupId = ${groupId}
+        and follow = true
+    `
+
+    try{
+        const res = await connection.query(qryStr);
+        if(res.length>0){
+            return {success:true};
+        }else{
+            return {success:false,msg:'등록 되지 않은 유저입니다'};
+        }
+
+    }catch(err){
+        console.log(err);
+        return {success:false};
     }
 }
 

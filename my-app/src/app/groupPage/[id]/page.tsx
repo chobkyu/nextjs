@@ -1,4 +1,5 @@
 "use client"
+import { MyList } from "@/app/myPage/[id]/MyList";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie"
@@ -56,9 +57,9 @@ export default function GroupPage() {
                 </div>
             </header>
 
-            {/* <div className='Tab' style={{ height: 'auto', textAlign: 'center', marginTop: '0.7rem' }}>
+            <div className='Tab' style={{ height: 'auto', textAlign: 'center', marginTop: '0.7rem' }}>
                 <MyList />
-            </div> */}
+            </div>
         </div>
     )
 }
