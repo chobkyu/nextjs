@@ -1,6 +1,7 @@
 import { checkUser } from "@/app/Common/checkGroupMem";
 import { NextRequest, NextResponse } from "next/server";
 
+const connection = require('../../config/db');
 //그룹 게시글 리스트
 export async function GET(request:NextRequest){
     const qryString = request.nextUrl.searchParams;

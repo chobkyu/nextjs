@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const connection = require('../../../config/db');
+
 export async function GET(request:NextRequest, context:{params:any}){
     const groupBoardId = context.params.id;
 

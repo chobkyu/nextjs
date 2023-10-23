@@ -7,6 +7,8 @@ interface writeData{
     contents : string,
 }
 
+const connection = require('../../config/db');
+
 export async function POST(request:Request){
     const body = await request.json();
 
@@ -23,6 +25,8 @@ export async function POST(request:Request){
             '${setWriteData.title}','${setWriteData.contents}',false,false,'${new Date()}',${setWriteData.userId},'${thumbnail}',${setWriteData.groupId})
         )
     `;
+
+    //유저 체크
 
     try{
         const res : any = await connection.query(qryStr);

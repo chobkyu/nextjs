@@ -2,7 +2,7 @@
 
 import { Divider } from "@mui/material";
 import { group } from "console";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface group {
@@ -15,6 +15,7 @@ interface group {
 export function GroupList() {
     const [groups, setGroups] = useState<group[]>([]);
     const { id } = useParams();
+    const router = useRouter();
 
     const getGroupList = async () => {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/getList/${id}`, { cache: 'no-cache' })
@@ -42,6 +43,10 @@ export function GroupList() {
         getGroupList();
     }, []);
 
+    const moveToGroupPage = (id:number) => {
+        router.push(`/groupPage/${id}`);
+    }
+
     const groupListComponent = (group: group) => {
         return (
             <>
@@ -50,7 +55,7 @@ export function GroupList() {
                         <img style={{ width: '100%', height: '100%', objectFit: 'cover' }} src={group?.groupImg} />
 
                     </div>
-                    <div style={{ marginLeft: '1rem', float: 'left' }} >
+                    <div style={{ marginLeft: '1rem', float: 'left' }} onClick={()=>moveToGroupPage(group?.groupId)}>
                         <h3 style={{ padding: '0.01rem', margin: '0.2rem' }}>{group?.name}</h3>
                         <span style={{ margin: '0.2rem' }}>{group?.introduction}</span>
                     </div>
