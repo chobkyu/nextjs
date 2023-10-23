@@ -50,7 +50,7 @@ export default function GroupPage() {
             <Box>
                 <SpeedDial
                     ariaLabel="SpeedDial basic example"
-                    onClick={() => { router.push('/myPage/write') }}
+                    onClick={() => { router.push(`/groupPage/groupWrite/${id}`) }}
                     sx={{ position: 'fixed', top: '80%', right: '16px', color: grey[900] }}
                     icon={<EditIcon fontSize='small' sx={{ color: grey }} />}
                     style={{ color: 'black' }}

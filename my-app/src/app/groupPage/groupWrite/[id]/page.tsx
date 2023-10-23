@@ -3,10 +3,10 @@ import TextField from '@mui/material/TextField';
 import { createTheme, ThemeProvider, Theme, useTheme } from '@mui/material/styles';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 import { useEffect, useState } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { Button } from '@mui/material';
-import { getOption } from '../../Common/option'
+import { getOption } from '@/app/Common/option';
 
 
 interface writeData {
@@ -88,6 +88,7 @@ export default function Write() {
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies(['userData']);
   const pathname = usePathname();
+  const { id } = useParams();
 
   const [write, setWrite] = useState<writeData>({
     userId: 0,
@@ -102,7 +103,7 @@ export default function Write() {
       alert('로그인이 필요한 서비스입니다');
       router.push('/Sign/login');
     } else {
-      setWrite({ ...write, 'userId': userData.id })
+      setWrite({ ...write, 'userId': userData.id})
     }
   }, []);
 
@@ -114,19 +115,22 @@ export default function Write() {
   }
 
   const submitWriteData = () => {
-    const data = { write , urlArr }
+    const writeDto = {...write , groupId :id};
+    const data = { write:writeDto , urlArr }
     const option = getOption('POST', data);
 
     console.log(option);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board`, option)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/write`, option)
       .then(res => res.json())
       .then((res) => {
+        console.log(res)
         if (res.status == 201) {
           alert('등록 완료');
           setImgLoading(true);
           window.history.go(-1);
         } else {
           alert('에러가 발생했습니다');
+          setImgLoading(true);
           return;
         }
       })
