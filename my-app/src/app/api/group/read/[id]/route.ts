@@ -7,15 +7,23 @@ export async function GET(request:NextRequest, context:{params:any}){
 
     let qry = `
         select 
-            id,
-            title,
-            contents,
-            dateTime,
-            userId,
-            groupId
-        from next.group
-        where id = ${groupBoardId}
-        and isDeleted = false 
+            c.id,
+            c.title,
+            c.contents,
+            c.dateTime,
+            c.userId,
+            c.groupId,
+            a.userId,
+            a.userName,
+            b.imgUrl
+        from user a
+        join userImg b
+        on a.id = b.userId
+        join groupBoard c
+        on a.id = c.userId
+        where b.useFlag= true
+        and c.id = ${groupBoardId}
+        and c.isDeleted = false;
     `
 
     try{

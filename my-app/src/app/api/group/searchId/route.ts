@@ -1,16 +1,15 @@
-import { queryPromise } from "@/app/api/config/queryFunc";
 import { NextRequest, NextResponse } from "next/server";
+
 const connection = require('../../config/db');
 
 export async function GET(request:NextRequest){
     const urlQry = request.nextUrl.searchParams;
 
-    const searchId = urlQry.get('searchId');
+    const groupId = urlQry.get('groupId');
     const userId = urlQry.get('userId');
+    const id = urlQry.get('id');
 
-    console.log(searchId);
-    console.log(userId);
-    
+    console.log(groupId,userId,id)
     let qryStr = `
         select 
             a.id as user,
@@ -20,27 +19,25 @@ export async function GET(request:NextRequest){
         from user a
         left outer join (
             select 
-                friendId
-            from friends
-            where userId =${userId}
+                userId as friendId
+            from groupMem
+            where userId =${id}
+            and groupId = ${groupId}
         ) b
         on a.id = b.friendId
         left join userImg c
         on a.id = c.userId
         where b.friendId IS NULL
-        and not a.id in ('${userId}')
-        and a.userId like '%${searchId}%'
-        and c.useFlag = true
+        and a.userId like '%${userId}%'
+        and c.useFlag = true 
     `;
 
-    try {
+    try{
         const res = await connection.query(qryStr);
 
-        console.log(res);
-
-        return NextResponse.json({status:200, data:res});
+        return NextResponse.json({status:200,data:res});
     }catch(err){
         console.log(err);
-        return NextResponse.json(err);
+        return NextResponse.json({err});
     }
 }

@@ -16,17 +16,17 @@ export async function GET(request:NextRequest){
     if(!check.success) {
         console.log(check.success)
 
-        return {status:500, msg:check.msg};
+        return NextResponse.json({status:500,success:false, msg:check.msg});
     }
 
     const qryStr = `
         select 
-            a.id as groupBoardId,
+            b.id as groupBoardId,
             title,
             contents,
             dateTime,
             thumbnail,
-            b.id as groupId
+            a.id as groupId
         from next.groupName a
         join next.groupBoard b
         on a.id = b.groupId
@@ -48,6 +48,7 @@ export async function GET(request:NextRequest){
 async function checkUser(id:number, group:number) {
     const userId = id;
     const groupId = group
+    console.log(id,groupId)
     const qryStr = `
         select 
             id
