@@ -16,7 +16,7 @@ export async function GET(request:NextRequest){
     if(!check.success) {
         console.log(check.success)
 
-        return {status:500, msg:check.msg};
+        return NextResponse.json({status:500,success:false, msg:check.msg});
     }
 
     const qryStr = `

@@ -74,20 +74,33 @@ export function MyList() {
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/read?userId=${userId}&groupId=${id}`)
             .then(res => res.json())
             .then(res => {
-                console.log(res);
+              
+
+                if(!res.success){
+                    alert(res.msg);
+                    window.history.go(-1);
+                }
                 setGroup(res.data);
             })    
     }
 
     useEffect(() => {
-        const path = pathname.split('/',2)[1];
-        if(path==='groupPage'){
-            console.log(path)
-
-            getGroupList();
-        }else{
-            getList();
+        let userData = cookies.userData;
+        console.log(userData);
+        if (!userData) {
+            alert('로그인이 필요한 서비스입니다');
+            router.push('/Sign/login');
+        } else {
+            const path = pathname.split('/',2)[1];
+            if(path==='groupPage'){
+                console.log(path)
+    
+                getGroupList();
+            }else{
+                getList();
+            }
         }
+       
     }, []);
 
     const readBoard = (id: number) => {

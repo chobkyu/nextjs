@@ -1,6 +1,6 @@
 "use client"
 
-import { useParams } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -15,6 +15,7 @@ export default function ImgList() {
     const { id } = useParams();
     const [loading,setLoading] = useState<boolean>(false);
     const [imgList, setImgList] = useState<imgListOne[]>([]);
+    const pathname = usePathname();
 
     const getImgList = async () => {
         await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getImgList/${id}`, {
@@ -30,8 +31,29 @@ export default function ImgList() {
             });
     }
 
+    const getGroupImgList = async () => {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/read/imgList/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }).then((res) => res.json())
+            .then((res) => {
+                console.log(res)
+                setImgList(res.data);
+                setLoading(true);
+            });
+    }
+
     useEffect(() => {
-        getImgList();
+        const path = pathname.split('/',2)[1];
+        if(path==='groupPage'){
+            console.log(path)
+
+            getGroupImgList();
+        }else{
+            getImgList();
+        }
     }, []);
 
     return (
