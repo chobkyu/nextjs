@@ -7,8 +7,19 @@ import Avatar from '@mui/material/Avatar';
 import { Button } from "@mui/material";
 import ImgList from "@/app/myPage/read/[id]/ImageList";
 
+interface groupBoardRead {
+    id :number,
+    title : string,
+    contents:string,
+    dateTime : Date,
+    groupId:number,
+    userId : string,
+    userName:string,
+    imgUrl : string,
+
+}
 export default function GroupRead() {
-    const [board, setBoard] = useState<any>();
+    const [board, setBoard] = useState<groupBoardRead>();
     const router = useRouter();
     const { id } = useParams();
     const outerTheme = useTheme();
@@ -16,7 +27,7 @@ export default function GroupRead() {
 
     const getList = async () => {
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/board/getOne/${id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/read/${id}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -24,7 +35,7 @@ export default function GroupRead() {
             }).then((res) => res.json())
                 .then((res) => {
                     console.log(res)
-                    setBoard(res.data);
+                    setBoard(res.data[0]);
                 });
 
         } catch (err) {
@@ -49,12 +60,12 @@ export default function GroupRead() {
                 </div>
                 <div style={{ float: 'left' }}>
                     <Avatar alt="Remy Sharp"
-                        src={board?.userImg}
+                        src={board?.imgUrl}
                         sx={{ width: 36, height: 36 }} />
 
                 </div>
                 <div className='profile' style={{ float: 'left', marginLeft: '1rem', marginTop: '0.5rem', width: '10rem', padding: '0.01rem' }} >
-                    <span>{board?.name}</span>
+                    <span>{board?.userName}</span>
 
                 </div>
             </header>

@@ -12,7 +12,6 @@ export async function GET(request:NextRequest){
         return {success:false, status:404,msg:'잘못된 요청입니다.'}
     }
 
-    console.log('??')
     const check = await checkUser(parseInt(userId),parseInt(groupId))
     if(!check.success) {
         console.log(check.success)
