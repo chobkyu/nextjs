@@ -48,6 +48,7 @@ export async function GET(request:NextRequest){
 async function checkUser(id:number, group:number) {
     const userId = id;
     const groupId = group
+    console.log(id,groupId)
     const qryStr = `
         select 
             id

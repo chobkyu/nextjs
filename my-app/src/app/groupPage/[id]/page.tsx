@@ -1,6 +1,6 @@
 "use client"
 import { MyList } from "@/app/myPage/[id]/MyList";
-import { Box, SpeedDial } from "@mui/material";
+import { Box, Button, SpeedDial } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie"
@@ -61,6 +61,11 @@ export default function GroupPage() {
 
     }
 
+    const inviteMem = () => {
+        console.log('invite')
+        router.push(`/groupPage/invite/${id}`);
+    }
+
     return (
         <div>
             <header className='card_myPage' style={{ height: '13rem', padding: '1rem', }}>
@@ -74,6 +79,10 @@ export default function GroupPage() {
                 </div>
                 <div className='hamadi' style={{ display: 'inline-block', width: '100%', marginTop: '1.5rem' }}>
                     {group?.introduction}
+                </div>
+                <div style={{textAlign:'right'}}>
+                    <Button variant="contained" onClick={() => inviteMem()} style={{background:'black',fontWeight:'bold'}} size='small'>add Member</Button>
+
                 </div>
             </header>
 
