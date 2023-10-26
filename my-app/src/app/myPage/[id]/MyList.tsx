@@ -24,7 +24,8 @@ interface group{
     title : string,
     contents : string,
     dateTime : Date,
-    thumbnail : string
+    thumbnail : string,
+    groupId : number
 }
 
 const colorArr = [
@@ -67,8 +68,9 @@ export function MyList() {
     }
 
     const getGroupList = async () => {
+        console.log('????')
         const userId = cookies.userData.id;
-
+        console.log('group')
         fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/group/read?userId=${userId}&groupId=${id}`)
             .then(res => res.json())
             .then(res => {
@@ -79,8 +81,9 @@ export function MyList() {
 
     useEffect(() => {
         const path = pathname.split('/',2)[1];
-
         if(path==='groupPage'){
+            console.log(path)
+
             getGroupList();
         }else{
             getList();
@@ -89,6 +92,10 @@ export function MyList() {
 
     const readBoard = (id: number) => {
         router.push(`/myPage/read/${id}`);
+    }
+
+    const readGroupBoard = (id:number) => {
+        router.push(`/groupPage/groupRead/${id}`);
     }
 
     const getColor = () => {
@@ -122,7 +129,7 @@ export function MyList() {
         
         if (boardOne.thumbnail != null) {
             return (
-                <ImageListItem key={boardOne.thumbnail} onClick={() => readBoard(boardOne.groupBoardId)}>
+                <ImageListItem key={boardOne.thumbnail} onClick={() => readGroupBoard(boardOne.groupBoardId)}>
                     <img
                         srcSet={`${boardOne.thumbnail}`}
                         src={`${boardOne.thumbnail}`}
@@ -133,7 +140,7 @@ export function MyList() {
         } else {
             const width = getWidth();
             return (
-                <div style={{ display: 'inline-block', height: '10.25rem',width:`${width}`, background:getColor()}} onClick={() => readBoard(boardOne.groupBoardId)}>
+                <div style={{ display: 'inline-block', height: '10.25rem',width:`${width}`, background:getColor()}} onClick={() => readGroupBoard(boardOne.groupBoardId)}>
                     <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
                 </div>
             )

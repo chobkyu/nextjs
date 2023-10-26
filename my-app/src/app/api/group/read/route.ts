@@ -12,6 +12,7 @@ export async function GET(request:NextRequest){
         return {success:false, status:404,msg:'잘못된 요청입니다.'}
     }
 
+    console.log('??')
     const check = await checkUser(parseInt(userId),parseInt(groupId))
     if(!check.success) {
         console.log(check.success)
@@ -21,12 +22,12 @@ export async function GET(request:NextRequest){
 
     const qryStr = `
         select 
-            a.id as groupBoardId,
+            b.id as groupBoardId,
             title,
             contents,
             dateTime,
             thumbnail,
-            b.id as groupId
+            a.id as groupId
         from next.groupName a
         join next.groupBoard b
         on a.id = b.groupId
