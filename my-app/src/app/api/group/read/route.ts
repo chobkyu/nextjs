@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "../../../../../lib/prisma";
 
-const connection = require('../../config/db');
 //그룹 게시글 리스트
 export async function GET(request:NextRequest){
     const qryString = request.nextUrl.searchParams;
@@ -19,23 +19,23 @@ export async function GET(request:NextRequest){
         return NextResponse.json({status:500,success:false, msg:check.msg});
     }
 
-    const qryStr = `
-        select 
-            b.id as groupBoardId,
-            title,
-            contents,
-            dateTime,
-            thumbnail,
-            a.id as groupId
-        from next.groupName a
-        join next.groupBoard b
-        on a.id = b.groupId
-        where groupId = ${groupId}
-        and isDeleted = false;
-    `;
 
     try{
-        const res = await connection.query(qryStr);
+        const res = await prisma.$queryRaw`
+            select 
+                b.id as groupBoardId,
+                title,
+                contents,
+                dateTime,
+                thumbnail,
+                a.id as groupId
+            from next.groupName a
+            join next.groupBoard b
+            on a.id = b.groupId
+            where groupId = ${groupId}
+            and isDeleted = false;
+        `;
+
         console.log(res);
         return NextResponse.json({status:200,success:true,data:res})
     }catch(err){
@@ -49,19 +49,19 @@ async function checkUser(id:number, group:number) {
     const userId = id;
     const groupId = group
     console.log(id,groupId)
-    const qryStr = `
-        select 
-            id
-        from groupMem
-        where
-        userId = ${userId}
-        and 
-        groupId = ${groupId}
-        and follow = true
-    `
-
+   
     try{
-        const res = await connection.query(qryStr);
+        const res:any = await prisma.$queryRaw`
+            select 
+                id
+            from groupMem
+            where
+            userId = ${userId}
+            and 
+            groupId = ${groupId}
+            and follow = true
+        `;
+
         if(res.length>0){
             return {success:true};
         }else{

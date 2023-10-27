@@ -1,36 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
-const connection = require('../../../config/db');
+import prisma from "../../../../../../lib/prisma";
+
 
 interface getListDto{
     userId:number;
 }
 
 export async function GET(request:NextRequest,context:{params: any}) {
-    console.log(context)
-    const userId = context.params.id
-
-    let queryString = `
-        select 
-            a.id as user,
-            a.userId,
-            a.userName,
-            b.id as boardId,
-            b.title,
-            b.contents,
-            b.isModified,
-            b.dateTime,
-            b.thumbnail
-        from user a
-        join myBoard b
-        on a.id = b.userId
-        where a.id = ${userId}
-        and b.isDeleted = false
-        order by boardId desc
-    `;
+    const userId = context.params.id;
+    console.log(userId);
 
     try{
-        const res = await connection.query(queryString);
+        console.log(typeof userId);
 
+        const res = await prisma.$queryRaw`
+        select 
+                a.id as user,
+                a.userId,
+                a.userName,
+                b.id as boardId,
+                b.title,
+                b.contents,
+                b.isModified,
+                b.dateTime,
+                b.thumbnail
+            from user a
+            join myBoard b
+            on a.id = b.userId
+            where b.userId = ${userId}
+            and b.isDeleted = false
+            order by boardId desc
+    `;
+        
         return NextResponse.json({status:201, datas: res});
     }catch(err){
         console.log(err);

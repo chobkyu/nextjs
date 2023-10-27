@@ -1,7 +1,6 @@
 import { NextResponse , NextRequest} from 'next/server'
 import { queryPromise } from '../../config/queryFunc';
 import prisma from '../../../../../lib/prisma';
-const connection = require('../../config/db');
 //import { Prisma } from "@prisma/client";
 
 

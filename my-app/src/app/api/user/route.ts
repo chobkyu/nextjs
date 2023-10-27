@@ -1,6 +1,6 @@
 import { NextResponse , NextRequest} from 'next/server'
+import prisma from '../../../../lib/prisma';
 
-const connection = require('../config/db');
 
 interface userData {
     userId:string,
@@ -20,10 +20,10 @@ export async function POST(request: Request) {
 
     console.log(userId)
     console.log(password)
-    let queryString = `select * from user where userId = '${userId}' and userPw = '${password}'`;
 
     try{
-        const row : userData | any = await connection.query(queryString);
+        const row : userData | any = await prisma.$queryRaw `select * from user where userId = ${userId} and userPw = ${password}`;
+
         if(row){
             const { userPw, ...result } = row[0]; 
             return NextResponse.json({status:201,success:true,data:result});
