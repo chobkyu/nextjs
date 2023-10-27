@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "prisma":"npx prisma init --datasource-provider mysql",
+    "prisma2":"npx prisma generate",
     "lint": "next lint"
   },
   "dependencies": {
