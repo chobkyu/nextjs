@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id Int @id @default(autoincrement())
+  userId String @unique
+  userPw String
+  userName String
+  userBirth DateTime
+  myIntro String
+  userImgs userImg[]
+  myBoard myBoard[]
+  groupMem groupMem[]
+  groupInvite groupInvite[]
+  groupBoard groupBoard[]
+  friends friends[]
+
+}
+
+model userImg {
+  id Int @id @default(autoincrement())
+  imgUrl String
+  useFlag Boolean @default(false)
+  user user @relation(fields:[userId],references:[id])
+  userId Int
+}
+
+model myBoard {
+  id Int @id @default(autoincrement())
+  title String
+  contents String
+  idDeleted Boolean @default(false)
+  isModified Boolean @default(false)
+  dateTime DateTime
+  thumbnail String
+  user user @relation(fields:[userId],references:[id])
+  userId Int
+  myBoardImg myBoardImg[]
+}
+
+model myBoardImg {
+  id Int @id @default(autoincrement())
+  imgUrl String
+  myBoard myBoard @relation(fields:[boardId],references:[id])
+  boardId Int
+}
+
+model invite {
+  id Int @id @default(autoincrement())
+  fromId Int
+  toId Int
+  yesFlag Boolean @default(false)
+  noFlag Boolean @default(false)
+}
+
+model groupName {
+  id Int @id @default(autoincrement())
+  name String
+  introduction String
+  groupImg String
+  groupMem groupMem[]
+  groupInvite groupInvite[]
+  groupBoard groupBoard[]
+}
+
+model groupMem {
+  id Int @id @default(autoincrement())
+  follow Boolean @default(false)
+  user user @relation(fields:[userId],references:[id])
+  userId Int
+  groupName groupName @relation(fields:[groupId],references:[id])
+  groupId Int
+}
+
+model groupInvite {
+  id Int @id @default(autoincrement())
+  user user @relation(fields:[userId],references:[id])
+  userId Int
+  groupName groupName @relation(fields:[groupId],references:[id])
+  groupId Int
+  permit Boolean @default(false)
+}
+
+model groupBoard {
+  id Int @id @default(autoincrement())
+  title String
+  contents String
+  isDeleted Boolean @default(false)
+  isModified Boolean @default(false)
+  dateTime DateTime
+  thumbnail String
+  user user @relation(fields:[userId],references:[id])
+  userId Int
+  groupName groupName @relation(fields:[groupId],references:[id])
+  groupId Int
+  groupBoardImg groupBoardImg[]
+}
+
+model groupBoardImg {
+  id Int @id @default(autoincrement())
+  imgUrl String
+  groupBoard groupBoard @relation(fields:[groupBoardId],references:[id])
+  groupBoardId Int
+}
+
+model friends {
+  id Int @id @default(autoincrement())
+  friendId Int
+  user user @relation(fields:[userId],references:[id])
+  userId Int
+}

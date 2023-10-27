@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.9",
     "@mui/material": "^5.14.8",
+    "@prisma/client": "^5.5.2",
     "@types/node": "20.5.9",
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
@@ -35,6 +36,6 @@
     "typescript": "5.2.2"
   },
   "devDependencies": {
-    "prisma": "^5.5.0"
+    "prisma": "^5.5.2"
   }
 }

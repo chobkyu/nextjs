@@ -1,7 +1,7 @@
 import { queryPromise } from "@/app/api/config/queryFunc";
 import { NextRequestWithAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-const connection = require('../../../config/db');
+import prisma from "../../../../../../lib/prisma";
 
 interface getOne {
     user : number,
@@ -20,29 +20,26 @@ export async function GET(request:NextRequestWithAuth, context:{params:any}){
     console.log('-------------------');
     console.log(boardId);
 
-    let queryString = `
-        select 
-            a.id as user,
-            a.userId,
-            a.userName as name,
-            b.id as boardId,
-            b.title,
-            b.contents,
-            b.isModified,
-            b.dateTime,
-            d.imgUrl as userImg
-        from next.user a
-        left join next.myBoard b
-        on a.id = b.userId
-        left join next.userImg d
-        on a.id = d.userId
-        where b.id = ${boardId}
-        and b.isDeleted = false
-        and d.useFlag = true
-    `;
-
     try{
-        const res : getOne[] | any= await connection.query(queryString);
+        const res : getOne[] | any= await prisma.$queryRaw`
+            select 
+                a.id as user,
+                a.userId,
+                a.userName as name,
+                b.id as boardId,
+                b.title,
+                b.contents,
+                b.isModified,
+                d.imgUrl as userImg
+            from next.user a
+            left join next.myBoard b
+            on a.id = b.userId
+            left join next.userImg d
+            on a.id = d.userId
+            where b.id = ${boardId}
+            and b.isDeleted = false
+            and d.useFlag = true
+        `;
 
         console.log(res);
         

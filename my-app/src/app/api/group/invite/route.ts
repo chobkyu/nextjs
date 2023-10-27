@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-
-const connection = require('../../config/db');
+import prisma from "../../../../../lib/prisma";
 
 interface invite{
     userId:number,
@@ -11,11 +10,9 @@ export async function POST(request:Request){
 
     const { userId, groupId } = body;
 
-    let qryStr = `insert into groupInvite(userId, groupId)
-                values (${userId}, ${groupId})`;
-
     try{
-        await connection.query(qryStr);
+        await prisma.$queryRaw`insert into groupInvite(userId, groupId)
+                            values (${userId}, ${groupId})`;
 
         return NextResponse.json({status:201,success:true});
     }catch(err){

@@ -1,6 +1,6 @@
 import { NextRequestWithAuth } from "next-auth/middleware";
 import { NextRequest, NextResponse } from "next/server";
-const connection = require('../../config/db');
+import prisma from "../../../../../lib/prisma";
 
 export async function GET(request:NextRequest){
     const qryString = request.nextUrl.searchParams;
@@ -10,16 +10,15 @@ export async function GET(request:NextRequest){
 
     console.log(userId + ', '+friendId);
 
-    let queryString = `
-        select *
-        from friends
-        where
-            userId = ${friendId} and
-            friendId = ${userId}
-    `;
-
     try{
-        const res :any = await connection.query(queryString);
+        const res :any = await prisma.$queryRaw`
+            select *
+            from friends
+            where
+                userId = ${friendId} and
+                friendId = ${userId}
+        `;
+
         let success;
 
         if(res.length>0) {
