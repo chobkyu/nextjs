@@ -45,8 +45,12 @@ export default function SignUp() {
                         alert('사용 불가한 아이디입니다.');
                         return;
                     }
-                }else{
+                }else if(res.status==201){
+                    alert('로그인 해주세요')
                     router.push('/');
+
+                }else{
+                    return;
                 }
             }
             ); 
