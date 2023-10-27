@@ -76,7 +76,7 @@ const checkUser = async (userId:string, userPw:string) => {
 const getUserId = async (userId:string,userPw:string,userBirth:string,userName:string) => {
     try{
         //const res : any = await connection.query(queryString);
-        const res = await prisma.$queryRaw`select id from user where userId=${userId} and userPw=${userPw} and userName=${userName}`;
+        const res :any= await prisma.$queryRaw`select id from user where userId=${userId} and userPw=${userPw} and userName=${userName}`;
         
 
         console.log(res[0].id);
