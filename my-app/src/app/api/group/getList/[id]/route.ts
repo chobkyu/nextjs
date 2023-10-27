@@ -15,6 +15,7 @@ export async function GET(request:NextRequest, context:{params:any}){
             join groupMem b
             on a.id = b.groupId
             where b.userId = ${userId}
+            order by groupId desc
         `;
 
         return NextResponse.json({status:200, success:true, data:res});

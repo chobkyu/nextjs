@@ -2,10 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../../lib/prisma";
 
 
-interface getListDto{
-    userId:number;
-}
-
 export async function GET(request:NextRequest,context:{params: any}) {
     const userId = context.params.id;
     console.log(userId);
@@ -14,7 +10,7 @@ export async function GET(request:NextRequest,context:{params: any}) {
         console.log(typeof userId);
 
         const res = await prisma.$queryRaw`
-        select 
+            select 
                 a.id as user,
                 a.userId,
                 a.userName,
@@ -22,14 +18,13 @@ export async function GET(request:NextRequest,context:{params: any}) {
                 b.title,
                 b.contents,
                 b.isModified,
-                b.dateTime,
                 b.thumbnail
             from user a
             join myBoard b
             on a.id = b.userId
-            where b.userId = ${userId}
+            where a.id = ${userId}
             and b.isDeleted = false
-            order by boardId desc
+            order by b.id desc
     `;
         
         return NextResponse.json({status:201, datas: res});
