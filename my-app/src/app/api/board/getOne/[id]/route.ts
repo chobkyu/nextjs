@@ -30,7 +30,6 @@ export async function GET(request:NextRequestWithAuth, context:{params:any}){
                 b.title,
                 b.contents,
                 b.isModified,
-                b.dateTime,
                 d.imgUrl as userImg
             from next.user a
             left join next.myBoard b

@@ -9,7 +9,7 @@ export async function POST (request:Request) {
 
     try{
         await prisma.$queryRaw `
-            update user set myIntro = '${selfIntro}' where id = ${id}
+            update user set myIntro = ${selfIntro} where id = ${id}
         `;
 
         return NextResponse.json({status:201, success:true});
