@@ -122,6 +122,7 @@ export function MyList() {
             return (
                 <ImageListItem key={boardOne.thumbnail} onClick={() => readBoard(boardOne.boardId)}>
                     <img
+                        style={{height :'10.25rem'}}
                         srcSet={`${boardOne.thumbnail}`}
                         src={`${boardOne.thumbnail}`}
                         alt={boardOne.title}
