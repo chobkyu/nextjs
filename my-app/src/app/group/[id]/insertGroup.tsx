@@ -125,7 +125,7 @@ export default function InsertGroup(){
                             setSaveGroup(emptyObj);
                             return;
                         }else{
-                            alert('에러 발생');
+                            alert(res.msg);
                             setImgLoading(true);
                             return;
                         }

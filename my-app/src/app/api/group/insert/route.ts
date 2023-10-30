@@ -8,7 +8,12 @@ export async function POST(request:Request){
 
    
     try{
-      
+        
+        const check = await checkName(name);
+        console.log(check);
+        if(!check.success){
+            return NextResponse.json({status:500,success:false,msg : check.msg});
+        }
   
         //transaction 필요
         await prisma.$queryRaw`insert into groupName(name,introduction, groupImg)
@@ -18,7 +23,7 @@ export async function POST(request:Request){
         const groupId = await getId(body);
 
         if(!groupId.success){
-            return NextResponse.json({status:500,success:false,msg : res.err});
+            return NextResponse.json({status:500,success:false,msg : groupId.err});
         }
         
         await prisma.$queryRaw`insert into groupMem(follow, userId, groupId)
@@ -50,5 +55,24 @@ const getId = async (obj:any) => {
     }catch(err){
         console.log(err);
         return {success:false,err};
+    }
+}
+
+const checkName = async (name:string) => {
+    try{
+        const res : any = await prisma.$queryRaw`
+            select
+                id
+            from groupName
+            where name = ${name}
+        `;
+
+        if(res.length!=0) return {success:false, msg:'중복된 이름입니다. 다른 이름을 선택하세요'}
+        
+        return {success:true};
+
+    }catch(err){
+        console.log(err);
+        return {success:false, err, msg:'에러 발생'};
     }
 }
