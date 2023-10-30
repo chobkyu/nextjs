@@ -132,8 +132,8 @@ export function MyList() {
         } else {
             const width = getWidth();
             return (
-                <div style={{ display: 'inline-block', height: '10.25rem',width:`${width}`, background:getColor()}} onClick={() => readBoard(boardOne.boardId)}>
-                    <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
+                <div style={{ display: 'inline-block', height: '10.25rem',overflow:'auto' ,width:`${width}`, background:getColor()}} onClick={() => readBoard(boardOne.boardId)}>
+                    <h4 style={{ marginTop: '1rem', maxWidth:'10rem'}}>{boardOne.title}</h4>
                 </div>
             )
         }
@@ -155,7 +155,7 @@ export function MyList() {
         } else {
             const width = getWidth();
             return (
-                <div style={{ display: 'inline-block', height: '10.25rem',width:`${width}`, background:getColor()}} onClick={() => readGroupBoard(boardOne.groupBoardId)}>
+                <div style={{ display: 'inline-block', overflow:'auto' ,height: '10.25rem',width:`${width}`, background:getColor()}} onClick={() => readGroupBoard(boardOne.groupBoardId)}>
                     <h4 style={{ marginTop: '1rem' }}>{boardOne.title}</h4>
                 </div>
             )
