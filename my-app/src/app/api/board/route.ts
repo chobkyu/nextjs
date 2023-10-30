@@ -51,7 +51,7 @@ export async function POST(request : Request) {
 }
 
 //need to refactor
-const getId =async (params:writeData) => {
+const getId = async (params:writeData) => {
     try{
         const res:any = await prisma.$queryRaw`
             select
