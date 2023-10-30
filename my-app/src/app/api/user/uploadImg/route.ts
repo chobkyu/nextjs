@@ -10,7 +10,7 @@ export async function POST(request:Request) {
     
     try{
         const updateExImg = prisma.$queryRaw`update userImg set useFlag=false where id=${exImgId}`;
-        const insertNewImg = prisma.$queryRaw`insert into userImg(imgUrl,useFlag,userId) values ('${newImgUrl}',true,${userId})`;
+        const insertNewImg = prisma.$queryRaw`insert into userImg(imgUrl,useFlag,userId) values (${newImgUrl},true,${userId})`;
 
         const qryArr : any[] = [updateExImg,insertNewImg];
       
