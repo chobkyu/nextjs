@@ -7,7 +7,8 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { Button } from '@mui/material';
 import { getOption } from '../../Common/option'
-
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface writeData {
   userId: number,
@@ -124,6 +125,7 @@ export default function Write() {
         if (res.status == 201) {
           alert('등록 완료');
           setImgLoading(true);
+          handleClose();
           window.history.go(-1);
         } else {
           alert('에러가 발생했습니다');
@@ -238,8 +240,17 @@ export default function Write() {
   };
 
   const noDoubleClick = () => {
+    handleOpen();
     imgLoading ? uploadImgClient() : alert('등록중입니다')
   }
+
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <div style={{ marginLeft: '1rem', marginTop: '2rem' }}>
@@ -273,7 +284,15 @@ export default function Write() {
 
       </div>
 
-  
+      <div>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+          onClick={handleClose}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
 
     </div>
   )

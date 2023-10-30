@@ -7,7 +7,8 @@ import { useRouter, usePathname, useParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { Button } from '@mui/material';
 import { getOption } from '@/app/Common/option';
-
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 interface writeData {
   userId: number,
@@ -103,7 +104,7 @@ export default function Write() {
       alert('로그인이 필요한 서비스입니다');
       router.push('/Sign/login');
     } else {
-      setWrite({ ...write, 'userId': userData.id})
+      setWrite({ ...write, 'userId': userData.id })
     }
   }, []);
 
@@ -115,8 +116,8 @@ export default function Write() {
   }
 
   const submitWriteData = () => {
-    const writeDto = {...write , groupId :id};
-    const data = { write:writeDto , urlArr }
+    const writeDto = { ...write, groupId: id };
+    const data = { write: writeDto, urlArr }
     const option = getOption('POST', data);
 
     console.log(option);
@@ -127,6 +128,7 @@ export default function Write() {
         if (res.status == 201) {
           alert('등록 완료');
           setImgLoading(true);
+          handleClose();
           window.history.go(-1);
         } else {
           alert('에러가 발생했습니다');
@@ -144,7 +146,7 @@ export default function Write() {
   const [countImg, setCountImg] = useState<string>('첨부파일');
   const [imgLoading, setImgLoading] = useState<boolean>(true);
 
-  const urlArr: string[] =[];
+  const urlArr: string[] = [];
   // 클라이언트에서 업로드 (aws-sdk getsignedurl 이용)
 
   // 화면 상단에 이미지 표시
@@ -159,7 +161,7 @@ export default function Write() {
     if (e.target.files) {
       for (let i = 0; i < e.target.files.length; i++) {
         const img = e.target.files[i];
-        if(!img.type.match("image/.*")){
+        if (!img.type.match("image/.*")) {
           alert("이미지 파일만 업로드 가능합니다.")
           return;
         }
@@ -208,7 +210,7 @@ export default function Write() {
       // 2단계 : 가져온 url로 put 요청 보내기
       // 이미 파일 이름이나 경로 등은 url 받아올 때 지정을 다 해놨으므로,
       // image 파일 객체와 Content-type 정보만 넣어서 보냄
-      
+
       for (var i = 0; i < signedUrl.length; i++) {
         try {
           const uploadRes = await fetch(signedUrl[i], {
@@ -231,7 +233,7 @@ export default function Write() {
       console.log(urlArr);
       //setImgUrlList([...urlArr]);
       //console.log(imgUrlList)
-      const path = pathname.split('/',2)[1];
+      const path = pathname.split('/', 2)[1];
 
       // if(path==='')
       submitWriteData();
@@ -242,8 +244,17 @@ export default function Write() {
   };
 
   const noDoubleClick = () => {
+    handleOpen();
     imgLoading ? uploadImgClient() : alert('등록중입니다')
   }
+
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <div style={{ marginLeft: '1rem', marginTop: '2rem' }}>
@@ -277,7 +288,15 @@ export default function Write() {
 
       </div>
 
-  
+      <div>
+        <Backdrop
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={open}
+          onClick={handleClose}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      </div>
 
     </div>
   )
