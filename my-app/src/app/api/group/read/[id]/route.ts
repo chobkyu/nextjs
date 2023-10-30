@@ -10,7 +10,6 @@ export async function GET(request:NextRequest, context:{params:any}){
                 c.id,
                 c.title,
                 c.contents,
-                c.dateTime,
                 c.userId,
                 c.groupId,
                 a.userId,
