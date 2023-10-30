@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { queryPromise } from "../config/queryFunc";
+import prisma from "../../../../lib/prisma";
+import { Prisma } from "@prisma/client";
 const connection = require('../config/db');
 
 interface writeData {
@@ -44,33 +46,38 @@ export async function POST(request : Request) {
 
 /**이미지 업로드 작성 */
 async function uploadImgUrl(id : number, urlArr:Array<string>) {
-    const mysql = require('mysql2/promise');
-    const pool = await mysql.createPool({
-        host: process.env.DB_HOST,  
-        // host: '127.0.0.1', for MAC  
-        user: process.env.DB_USER, 
-        port: process.env.DB_PORT, 
-        password: process.env.DB_PASSWORD,  
-        database: process.env.DB 
-    });
+    // const mysql = require('mysql2/promise');
+    // const pool = await mysql.createPool({
+    //     host: process.env.DB_HOST,  
+    //     // host: '127.0.0.1', for MAC  
+    //     user: process.env.DB_USER, 
+    //     port: process.env.DB_PORT, 
+    //     password: process.env.DB_PASSWORD,  
+    //     database: process.env.DB 
+    // });
 
-    const connection = await pool.getConnection();
+    // const connection = await pool.getConnection();
+
+    const qryArr: any[] = [];
     try{
-        await connection.beginTransaction()
+        //await connection.beginTransaction()
         urlArr.forEach( async (url)=>{
-            const qryStr =  `insert into myBoardImg (imgUrl, boardId) values ('${url}',${id})`;
-            await connection.query(qryStr);
+            const qryStr =  await prisma.$queryRaw`insert into myBoardImg (imgUrl, boardId) values (${url},${id})`;
+            //await connection.query(qryStr);
+            qryArr.push(qryStr);
         });
 
-        await connection.commit();
+        await prisma.$transaction(qryArr,
+            {
+              isolationLevel: Prisma.TransactionIsolationLevel.Serializable, // optional, default defined by database configuration
+            });
+        // await connection.commit();
 
         return {success :true};
 
     }catch(err){
         console.log(err);
-        await connection.rollback();
+        // await connection.rollback();
         return {success:false};
-    }finally{
-        connection.release();
     }
 }
