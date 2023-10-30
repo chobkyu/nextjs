@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { queryPromise } from "../config/queryFunc";
 import prisma from "../../../../lib/prisma";
 import { Prisma } from "@prisma/client";
-const connection = require('../config/db');
+//const connection = require('../config/db');
 
 interface writeData {
     userId : number,
@@ -16,30 +16,57 @@ export async function POST(request : Request) {
 
     const write = body.write;
     const imgList = body.urlArr;
-
+    console.log('----------insert board-------------');
     console.log(imgList);
     const setWriteData :writeData = { ...write };
-    const thumbnail = imgList.length > 0 ? `'${imgList[0]}'` : null;
+    const thumbnail = imgList.length > 0 ? `${imgList[0]}` : null;
     //const date = new Date();
-    let queryString = `
-        insert into myBoard(
-            title,contents,isDeleted,isModified,dateTime,userId,thumbnail
-        ) values (
-            '${setWriteData.title}','${setWriteData.contents}',false,false,'${new Date()}',${setWriteData.userId},${thumbnail}
-        );
-    `
+    console.log(thumbnail);
     
     try{
-        const res : any = await connection.query(queryString);
+        const res : any = await prisma.$queryRaw`
+            insert into myBoard(
+                title,contents,isDeleted,isModified,dateTime,userId,thumbnail
+            ) values (
+                ${setWriteData.title},${setWriteData.contents},false,false,${new Date()},${setWriteData.userId},${thumbnail}
+            );
+        `
+        console.log(res);
+        
+        const boardIdx = await getId(setWriteData);
 
-        console.log(res['insertId']);
+        if(!boardIdx.success){
+            return NextResponse.json({status:500, success:false, msg:boardIdx.err});
+        }
 
-        await uploadImgUrl(res['insertId'],imgList);
+        console.log(boardIdx);
+
+        await uploadImgUrl(boardIdx.id,imgList);
 
         return NextResponse.json({status:201,success:true});
     } catch(err) {
         console.log(err);
         return NextResponse.json({err});
+    }
+}
+
+//need to refactor
+const getId =async (params:writeData) => {
+    try{
+        const res:any = await prisma.$queryRaw`
+            select
+                id
+            from myBoard
+            where title = ${params.title}
+            and contents = ${params.contents}
+            and userId = ${params.userId}
+            order by id desc;
+        `
+        console.log(res);
+        return {success:true, id : res[0].id}
+    }catch(err){
+        console.log(err);
+        return {success:false,err}
     }
 }
 
