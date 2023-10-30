@@ -10,6 +10,8 @@ export async function GET(request:NextRequest){
 
     console.log(searchId);
     console.log(userId);
+
+    const qrySearchId =`%${searchId}%`
     
     try {
         const res = await prisma.$queryRaw`
@@ -30,7 +32,7 @@ export async function GET(request:NextRequest){
             on a.id = c.userId
             where b.friendId IS NULL
             and not a.id in (${userId})
-            and a.userId like %${searchId}%
+            and a.userId like ${qrySearchId}
             and c.useFlag = true
         `;
 

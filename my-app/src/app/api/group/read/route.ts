@@ -26,7 +26,6 @@ export async function GET(request:NextRequest){
                 b.id as groupBoardId,
                 title,
                 contents,
-                dateTime,
                 thumbnail,
                 a.id as groupId
             from next.groupName a

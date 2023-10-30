@@ -59,7 +59,7 @@ async function uploadImgUrl(id : number, urlArr:Array<string>) {
     try{
         await connection.beginTransaction()
         urlArr.forEach( async (url)=>{
-            const qryStr =  `insert into groupBoardImg (imgUrl, groupBoarddId) values ('${url}',${id})`;
+            const qryStr =  `insert into groupBoardImg (imgUrl, groupBoardId) values ('${url}',${id})`;
             await connection.query(qryStr);
         });
 

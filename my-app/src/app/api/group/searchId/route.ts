@@ -9,6 +9,8 @@ export async function GET(request:NextRequest){
     const id = urlQry.get('id');
 
     console.log(groupId,userId,id)
+    
+    const qryUserId = `%${userId}%`
 
     try{
         const res = await prisma.$queryRaw`
@@ -29,7 +31,7 @@ export async function GET(request:NextRequest){
             left join userImg c
             on a.id = c.userId
             where b.friendId IS NULL
-            and a.userId like %${userId}%
+            and a.userId like ${qryUserId}
             and c.useFlag = true 
         `;
 
