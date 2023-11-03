@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 
 const steps = [
     {
-        label: 'PUDA에 오신 여러분을 환영합니다',
+        label: 'Welcome to the PUDA!!',
         description: 
     `
 Private Your Diary App!!
@@ -134,7 +134,7 @@ export default function Welcome() {
                     bgcolor: 'background.default',
                 }}
             >
-                <Typography><h3>{steps[activeStep].label}</h3></Typography>
+                <Typography><h2>{steps[activeStep].label}</h2></Typography>
             </Paper>
             <Box sx={{ height: 'auto', maxWidth: 380, width: '90%', p: 2, textAlign:'left' }}>
                 <div style={{textAlign:'center'}}>
