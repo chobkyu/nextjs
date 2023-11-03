@@ -104,10 +104,18 @@ export default function Welcome() {
     const maxSteps = steps.length;
 
     const handleNext = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
     const handleBack = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        })
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
     const router = useRouter();
