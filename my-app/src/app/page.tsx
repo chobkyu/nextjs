@@ -46,7 +46,7 @@ export default function Home() {
         <Button variant="contained" onClick={() =>router.push('/Sign/signUp')} style={{background:'black', width:'15.5rem',fontWeight:'bold'}} size='large'>Sign Up</Button>
       </p>
       <p>
-        <Button variant="contained" style={{background:'black',fontWeight:'bold'}} size='large'>Is this your first time?</Button>
+        <Button variant="contained" onClick={() => router.push('/welcome')} style={{background:'black',fontWeight:'bold'}} size='large'>Is this your first time?</Button>
       </p>
     </div>
       
