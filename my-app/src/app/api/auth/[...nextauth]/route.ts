@@ -1,4 +1,4 @@
-/*import NextAuth from 'next-auth/next'
+import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 const handler = NextAuth({
@@ -57,4 +57,4 @@ const handler = NextAuth({
     // }
 })
 
-export { handler as GET, handler as POST }*/
+//export { handler as GET, handler as POST }
